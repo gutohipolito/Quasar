@@ -5,7 +5,7 @@ import { useAuth } from "@/lib/auth";
 import { StarryBackground } from "@/components/StarryBackground";
 import { Lock, User, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import Turnstile from "react-turnstile";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -30,10 +30,12 @@ export default function LoginPage() {
             const success = await login(username, password);
             if (!success) {
                 setError("Credenciais inválidas. Tente novamente.");
+                setIsSubmitting(false); // Only stop loading on error or failure
             }
+            // If success is true, we intentionally keep isSubmitting true
+            // to show the spinner while the AuthProvider redirects the user.
         } catch (err) {
             setError("Ocorreu um erro ao tentar fazer login.");
-        } finally {
             setIsSubmitting(false);
         }
     };
@@ -129,9 +131,9 @@ export default function LoginPage() {
 
                             <div className="flex justify-center py-2 relative z-20">
                                 <Turnstile
-                                    sitekey="0x4AAAAAACVaIaxwdWqidEWk"
-                                    theme="dark"
-                                    onVerify={(token) => setIsBotVerified(true)}
+                                    siteKey="0x4AAAAAACVaIaxwdWqidEWk"
+                                    options={{ theme: 'dark' }}
+                                    onSuccess={(token) => setIsBotVerified(true)}
                                     onError={() => setIsBotVerified(false)}
                                     onExpire={() => setIsBotVerified(false)}
                                 />

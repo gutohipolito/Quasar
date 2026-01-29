@@ -23,6 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="script-src 'self' 'unsafe-eval' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com;"
+        />
+      </head>
       <body className={`${inter.className} ${orbitron.variable}`}> {/* Added variable */}
         <LanguageProvider>
           <AuthProvider>
