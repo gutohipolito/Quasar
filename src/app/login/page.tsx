@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth";
 import { StarryBackground } from "@/components/StarryBackground";
 import { Lock, User, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import Turnstile from "react-turnstile";
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -12,10 +13,17 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isBotVerified, setIsBotVerified] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        if (!isBotVerified) {
+            setError("Por favor, complete a verificação de segurança.");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -119,17 +127,27 @@ export default function LoginPage() {
                                 </div>
                             </div>
 
+                            <div className="flex justify-center py-2 relative z-20">
+                                <Turnstile
+                                    sitekey="1x00000000000000000000AA"
+                                    theme="dark"
+                                    onVerify={(token) => setIsBotVerified(true)}
+                                    onError={() => setIsBotVerified(false)}
+                                    onExpire={() => setIsBotVerified(false)}
+                                />
+                            </div>
+
                             <button
                                 type="submit"
-                                disabled={isSubmitting}
-                                className="relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-primary to-amber-600 p-[1px] shadow-lg shadow-amber-900/20 transition-all hover:shadow-amber-600/20 disabled:opacity-70 disabled:cursor-not-allowed group/btn"
+                                disabled={isSubmitting || !isBotVerified}
+                                className="relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-primary to-amber-600 p-[1px] shadow-lg shadow-amber-900/20 transition-all hover:shadow-amber-600/20 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
                             >
                                 <div className="relative flex items-center justify-center gap-2 rounded-xl bg-black/20 backdrop-blur-sm px-4 py-3 text-white transition-all group-hover/btn:bg-transparent">
                                     {isSubmitting ? (
                                         <Loader2 className="animate-spin" size={20} />
                                     ) : (
                                         <>
-                                            <span className="font-semibold">Entrar no Sistema</span>
+                                            <span className="font-semibold">{!isBotVerified ? "Complete o Captcha" : "Entrar no Sistema"}</span>
                                             <ArrowRight size={18} className="transition-transform group-hover/btn:translate-x-1" />
                                         </>
                                     )}
