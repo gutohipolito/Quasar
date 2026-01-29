@@ -114,6 +114,16 @@ body {
   background-image: none;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+
+  100% {
+    background-position: -200% center;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

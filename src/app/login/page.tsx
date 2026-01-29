@@ -31,7 +31,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen w-full overflow-hidden bg-black font-sans">
+        <div className="flex min-h-screen w-full overflow-hidden font-sans relative">
             <StarryBackground />
 
             {/* Left Side - Hero Image (Desktop Only) */}
@@ -51,7 +51,7 @@ export default function LoginPage() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <h2 className="text-5xl font-bold text-white mb-6 font-[family-name:var(--font-orbitron)] tracking-wider">
+                        <h2 className="text-6xl font-black mb-6 font-[family-name:var(--font-orbitron)] tracking-widest bg-[linear-gradient(110deg,#eab308,45%,#fef08a,55%,#eab308)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_3s_infinite]">
                             QUASAR
                         </h2>
                         <p className="text-xl text-gray-300 font-light leading-relaxed">
@@ -71,8 +71,8 @@ export default function LoginPage() {
                 >
                     {/* Mobile Logo */}
                     <div className="lg:hidden text-center mb-10">
-                        <h1 className="text-4xl font-bold text-white font-[family-name:var(--font-orbitron)] tracking-widest flex items-center justify-center gap-2">
-                            <Sparkles className="text-primary w-6 h-6" /> QUASAR
+                        <h1 className="text-5xl font-black font-[family-name:var(--font-orbitron)] tracking-widest bg-[linear-gradient(110deg,#eab308,45%,#fef08a,55%,#eab308)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_3s_infinite]">
+                            QUASAR
                         </h1>
                     </div>
 
