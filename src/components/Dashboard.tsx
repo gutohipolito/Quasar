@@ -70,7 +70,7 @@ export function Dashboard({ projectId }: { projectId?: string }) {
         let apiKey = null;
         if (projectId) {
             try {
-                const projectsStr = localStorage.getItem("ads_dashboard_projects");
+                const projectsStr = localStorage.getItem("ads_dashboard_projects_v2");
                 if (projectsStr) {
                     const projects = JSON.parse(projectsStr);
                     const project = projects.find((p: Project) => p.id === projectId);
@@ -228,7 +228,7 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                         </div>
 
                         {/* MAIN CHART - Center/Right Column (4 cols) */}
-                        <div className="col-span-1 md:col-span-4 lg:col-span-4 h-full min-h-[400px]">
+                        <div className="col-span-1 md:col-span-4 lg:col-span-4 h-[450px]">
                             <div className="h-full rounded-3xl border border-white/10 bg-card/50 p-6 backdrop-blur-md shadow-2xl flex flex-col">
                                 <PerformanceChart data={data} />
                             </div>
