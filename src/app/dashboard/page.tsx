@@ -24,35 +24,7 @@ interface Project {
 }
 
 // Mock initial data
-const INITIAL_PROJECTS: Project[] = [
-    {
-        id: "proj_1",
-        name: "E-commerce Launch",
-        description: "Campanha Q1 para lançamento da nova coleção de verão.",
-        lastActive: "2 horas atrás",
-        status: "active",
-        platform: "mixed",
-        apiKey: "dummy_key_1",
-        features: { audience: true, creatives: true, reports: true, aiPulse: false }
-    },
-    {
-        id: "proj_2",
-        name: "Brand Awareness",
-        description: "Conscientização de marca focada em YouTube e Display.",
-        lastActive: "1 dia atrás",
-        status: "paused",
-        platform: "google",
-        features: { audience: true, creatives: true, reports: false, aiPulse: false }
-    },
-    {
-        id: "proj_3",
-        name: "Retargeting Ops",
-        description: "Retargeting de alta intenção para abandono de carrinho.",
-        lastActive: "3 dias atrás",
-        status: "active",
-        platform: "facebook"
-    }
-];
+const INITIAL_PROJECTS: Project[] = [];
 
 export default function DashboardPage() {
     // Wrap content in ProtectedRoute with ADMIN role required
