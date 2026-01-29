@@ -129,7 +129,7 @@ export default function LoginPage() {
 
                             <div className="flex justify-center py-2 relative z-20">
                                 <Turnstile
-                                    sitekey="1x00000000000000000000AA"
+                                    sitekey="0x4AAAAAACVaIaxwdWqidEWk"
                                     theme="dark"
                                     onVerify={(token) => setIsBotVerified(true)}
                                     onError={() => setIsBotVerified(false)}
