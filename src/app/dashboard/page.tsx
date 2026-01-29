@@ -24,7 +24,18 @@ interface Project {
 }
 
 // Mock initial data
-const INITIAL_PROJECTS: Project[] = [];
+const INITIAL_PROJECTS: Project[] = [
+    {
+        id: "proj_internal_cob",
+        name: "CO-B",
+        description: "Projeto interno da empresa.",
+        lastActive: "Agora mesmo",
+        status: "active",
+        platform: "mixed",
+        apiKey: "543b424542ec11994fc42c2fa6b8e7ec011d",
+        features: { audience: true, creatives: true, reports: true, aiPulse: true }
+    }
+];
 
 export default function DashboardPage() {
     // Wrap content in ProtectedRoute with ADMIN role required
@@ -55,8 +66,9 @@ function DashboardContent() {
     });
 
     // Load from local storage on mount (simple persistence)
+    // KEY CHANGED to v2 to force reset/loading of new INITIAL_PROJECTS for current users
     useEffect(() => {
-        const saved = localStorage.getItem("ads_dashboard_projects");
+        const saved = localStorage.getItem("ads_dashboard_projects_v2");
         if (saved) {
             setProjects(JSON.parse(saved));
         }
@@ -66,7 +78,7 @@ function DashboardContent() {
     // Save to local storage on change
     useEffect(() => {
         if (isLoaded) {
-            localStorage.setItem("ads_dashboard_projects", JSON.stringify(projects));
+            localStorage.setItem("ads_dashboard_projects_v2", JSON.stringify(projects));
         }
     }, [projects, isLoaded]);
 
@@ -81,7 +93,8 @@ function DashboardContent() {
                         ...p,
                         name: newProjectName,
                         description: newProjectDesc || "Sem descrição",
-                        apiKey: newApiKey,
+                        // SECURE LOGIC: Only update API key if user provided a new one. Otherwise keep existing.
+                        apiKey: newApiKey.trim() ? newApiKey : p.apiKey,
                         logoUrl: newLogoUrl,
                         password: newPassword,
                         features: newFeatures
@@ -126,7 +139,8 @@ function DashboardContent() {
             setEditingProject(project);
             setNewProjectName(project.name);
             setNewProjectDesc(project.description);
-            setNewApiKey(project.apiKey || "");
+            // SECURE LOGIC: Do NOT pre-fill the API key. User must enter a new one to change it.
+            setNewApiKey("");
             setNewLogoUrl(project.logoUrl || "");
             setNewPassword(project.password || "");
             if (project.features) {
@@ -271,8 +285,8 @@ function DashboardContent() {
                             <div className="space-y-2">
                                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Chave de API Windsor.ai</label>
                                 <input
-                                    type="text"
-                                    placeholder="Insira sua chave de API (opcional)"
+                                    type="password"
+                                    placeholder={editingProject && editingProject.apiKey ? "•••••••••• (Chave configurada. Deixe em branco para manter)" : "Insira sua chave de API"}
                                     className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 font-mono"
                                     value={newApiKey}
                                     onChange={(e) => setNewApiKey(e.target.value)}
