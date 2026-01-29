@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-export function StarryBackground() {
+interface StarryBackgroundProps {
+    transparent?: boolean;
+}
+
+export function StarryBackground({ transparent = false }: StarryBackgroundProps) {
     const [starShadows, setStarShadows] = useState({ small: "", medium: "", big: "" });
     const [sparkles, setSparkles] = useState<{ id: number; top: string; left: string; delay: string; scale: number }[]>([]);
 
@@ -49,7 +53,7 @@ export function StarryBackground() {
     }, []);
 
     return (
-        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-background h-screen w-screen transition-colors duration-300">
+        <div className={`fixed inset-0 z-[-1] pointer-events-none overflow-hidden h-screen w-screen transition-colors duration-300 ${transparent ? '' : 'bg-background'}`}>
             {/* Styles for animations and shapes */}
             <style jsx>{`
                 @keyframes star-anim {
@@ -99,8 +103,10 @@ export function StarryBackground() {
                 }
             `}</style>
 
-            {/* Background Gradient */}
-            <div className="absolute inset-0 opacity-100 dark:bg-[radial-gradient(ellipse_at_bottom,_#1B2735_0%,_#090A0F_100%)] bg-[radial-gradient(ellipse_at_bottom,_#e2e8f0_0%,_#f8fafc_100%)]" />
+            {/* Background Gradient - Only if not transparent */}
+            {!transparent && (
+                <div className="absolute inset-0 opacity-100 dark:bg-[radial-gradient(ellipse_at_bottom,_#1B2735_0%,_#090A0F_100%)] bg-[radial-gradient(ellipse_at_bottom,_#e2e8f0_0%,_#f8fafc_100%)]" />
+            )}
 
             {/* Layer 1: Background Dust (Box Shadow Method) */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[1px] h-[1px]">
@@ -125,8 +131,10 @@ export function StarryBackground() {
                 ))}
             </div>
 
-            {/* Accents for Dark Mode */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900/10 to-amber-600/5 mix-blend-screen pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-300" />
+            {/* Accents for Dark Mode - Only if not transparent */}
+            {!transparent && (
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-900/10 to-amber-600/5 mix-blend-screen pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-300" />
+            )}
         </div>
     );
 }
