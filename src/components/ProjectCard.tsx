@@ -115,12 +115,12 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
                 <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground/60 font-mono">
                         <Calendar size={12} />
-                        <span>{lastActive}</span>
+                        <span>Ultima atualização: {lastActive}</span>
                     </div>
 
                     <Link
                         href={`/project?id=${id}`}
-                        className="flex items-center gap-2 text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group/link"
+                        className="flex items-center gap-2 text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group/link border border-white/10 rounded-2xl px-4 py-2 hover:bg-white/5"
                     >
                         Acessar
                         <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />
