@@ -28,9 +28,12 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.colombo-b.com
-          username: u543870049.quasar
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          # Ignorar erro de certificado se necessário (comum em shared hosting)
+          security: strict
+          # Se continuar falhando, tente 'insecure' mas cuidado.
           # O usuário FTP geralmente já cai no diretório correto configurado no cPanel.
           # Se não cair, pode ser necessário ajustar para public_html/quasar/
           server-dir: ./
