@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, BarChart3, Coins, CreditCard, DollarSign, MousePointerClick, RefreshCcw, ShoppingBag, TrendingUp, LayoutGrid, AlertCircle } from "lucide-react";
+import { Activity, BarChart3, Coins, CreditCard, DollarSign, MousePointerClick, RefreshCcw, ShoppingBag, TrendingUp, LayoutGrid, AlertCircle, ArrowLeft } from "lucide-react";
 import { AdData, fetchAdsData, fetchAudienceData, fetchCreativesData, SummaryMetrics, AudienceData, Creative, DateRange } from "@/lib/windsor";
 import { StatsCard } from "@/components/StatsCard";
 import { PerformanceChart } from "@/components/Charts/PerformanceChart";
@@ -163,7 +163,10 @@ export function Dashboard({ projectId }: { projectId?: string }) {
 
             {/* Top Bar Branding */}
             <div className="mx-auto max-w-[1600px] mb-8 flex items-center justify-between relative z-10">
-                <div>
+                <div className="flex items-center gap-4">
+                    <a href="/dashboard" className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
+                        <ArrowLeft className="w-5 h-5" />
+                    </a>
                     {projectLogo ? (
                         <div className="flex items-center gap-4">
                             <img

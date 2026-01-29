@@ -68,9 +68,6 @@ export default function LoginPage() {
                         <h1 className="text-6xl font-black font-[family-name:var(--font-orbitron)] tracking-widest bg-[linear-gradient(110deg,#eab308,45%,#fef08a,55%,#eab308)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_3s_infinite] drop-shadow-2xl">
                             QUASAR
                         </h1>
-                        <p className="mt-4 text-gray-300 font-light tracking-wide text-lg">
-                            Análise de dados nível interestelar
-                        </p>
                     </div>
 
                     {/* Glass Card */}
