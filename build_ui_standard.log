@@ -7,3 +7,23 @@
   Creating an optimized production build ...
 ✓ Compiled successfully in 13.5s
   Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/9) ...
+  Generating static pages using 11 workers (2/9) 
+  Generating static pages using 11 workers (4/9) 
+  Generating static pages using 11 workers (6/9) 
+✓ Generating static pages using 11 workers (9/9) in 2.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /dashboard
+├ ○ /icon.png
+├ ○ /login
+├ ○ /project
+└ ○ /robots.txt
+
+
+○  (Static)  prerendered as static content
+
