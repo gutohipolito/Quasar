@@ -14,6 +14,10 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   title: "Quasar Dashboard",
   description: "Advanced Analytics for Modern Marketing",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
