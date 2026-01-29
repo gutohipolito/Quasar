@@ -55,12 +55,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Role-based Redirects
             if (pathname === "/login") {
                 if (user.role === "ADMIN") router.push("/");
-                if (user.role === "CLIENT") router.push(`/project/${user.id}`);
+                if (user.role === "CLIENT") router.push(`/project?id=${user.id}`);
             }
 
             // Prevent Client from accessing Hub
             if (user.role === "CLIENT" && pathname === "/") {
-                router.push(`/project/${user.id}`);
+                router.push(`/project?id=${user.id}`);
             }
         }
     }, [user, isLoading, pathname, router]);

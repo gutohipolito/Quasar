@@ -1,9 +1,6 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdData } from "@/lib/windsor";
-import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { formatCurrency } from "@/lib/utils";
 

@@ -121,7 +121,7 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
                 </div>
 
                 <Link
-                    href={`/project/${id}`}
+                    href={`/project?id=${id}`}
                     className="flex items-center justify-between w-full rounded-2xl bg-white/5 p-3 text-sm font-medium text-foreground transition-all hover:bg-white/10 hover:pr-2 group-hover:bg-primary group-hover:text-primary-foreground"
                 >
                     <span>Open Dashboard</span>
