@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const login = async (name: string, pass: string): Promise<boolean> => {
         // 1. Check Admin
-        if (name === "admin" && pass === "admin") {
+        if (name === "Asthros" && pass === "X9#mK2$pL5@vQ8&nS3*z") {
             const adminUser: User = { id: "admin", name: "Administrator", role: "ADMIN" };
             setUser(adminUser);
             sessionStorage.setItem("ads_dashboard_user", JSON.stringify(adminUser));
