@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/* Quasar Light Mode */
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.8);
+  --card-foreground: #020617;
+  --primary: #d97706;
+  /* Amber 600 */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #fffbeb;
+  /* Amber 50 */
+  --accent-foreground: #d97706;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #d97706;
+  --radius: 0.75rem;
+
+  /* Starry Theme Adapter */
+  --star-color: #94a3b8;
+  /* Slate 400 for Light Mode Stars */
+}
+
+.dark {
+  /* Quasar Dark Mode (Deep Space) */
+  --background: #020617;
+  /* Slate 950 */
+  --foreground: #f8fafc;
+  --card: rgba(15, 23, 42, 0.7);
+  /* Slate 900 with transparency */
+  --card-foreground: #f8fafc;
+  --primary: #fbbf24;
+  /* Amber 400 - Gold */
+  --primary-foreground: #020617;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #020617;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  /* Slate 800 */
+  --accent-foreground: #fbbf24;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: rgba(251, 191, 36, 0.1);
+  /* Subtle Gold Border */
+  --input: #1e293b;
+  --ring: #fbbf24;
+
+  /* Starry Theme Adapter */
+  --star-color: #ffffff;
+  /* White for Dark Mode Stars */
+}
+
+body {
+  background-color: transparent;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* Noise Texture Overlay */
+
+
+/* Logo Adaptation Logic */
+.logo-brand {
+  filter: invert(1);
+  /* Light Mode: Invert White to Black */
+}
+
+.dark .logo-brand {
+  filter: none;
+  /* Dark Mode: Keep original White */
+}
+
+/* Light Mode Pattern: Subtle Grid on White */
+/* Background patterns removed for Quasar clean look */
+:root body {
+  background-image: none;
+}
+
+.dark body {
+  background-image: none;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
