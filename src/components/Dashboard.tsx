@@ -88,28 +88,29 @@ export function Dashboard({ projectId }: { projectId?: string }) {
         setHasApiKey(!!apiKey);
 
         try {
-            const { data: adsData, summary: adsSummary } = await fetchAdsData(apiKey, dateRange, platform);
+            // Parallel Data Fetching
+            const [
+                { data: adsData, summary: adsSummary },
+                audienceData,
+                creativesData,
+                geoData,
+                dayParting,
+                funnelData
+            ] = await Promise.all([
+                fetchAdsData(apiKey, dateRange, platform),
+                features.audience ? fetchAudienceData(apiKey) : Promise.resolve(null),
+                features.creatives ? fetchCreativesData(apiKey) : Promise.resolve([]),
+                fetchGeoData(apiKey),
+                fetchDaypartingData(apiKey),
+                fetchFunnelData(apiKey)
+            ]);
+
             setData(adsData);
             setSummary(adsSummary);
-
-            if (features.audience) {
-                const audienceData = await fetchAudienceData(apiKey);
-                setAudience(audienceData);
-            }
-
-            if (features.creatives) {
-                const creativesData = await fetchCreativesData(apiKey);
-                setCreatives(creativesData);
-            }
-
-            // Fetch Advanced Data
-            const geoData = await fetchGeoData(apiKey);
+            setAudience(audienceData);
+            setCreatives(creativesData);
             setGeo(geoData);
-
-            const dayParting = await fetchDaypartingData(apiKey);
             setDayData(dayParting);
-
-            const funnelData = await fetchFunnelData(apiKey);
             setFunnel(funnelData);
 
         } catch (err) {
