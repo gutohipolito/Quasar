@@ -165,7 +165,7 @@ function DashboardContent() {
             {/* Header */}
             <div className="mx-auto max-w-[1600px] mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-3 bg-primary/10 rounded-2xl">
+                    <div className="p-3 bg-primary/10 rounded-[10px]">
                         <LayoutGrid className="text-primary w-6 h-6" />
                     </div>
                     <div>
@@ -222,7 +222,7 @@ function DashboardContent() {
                     {/* Empty State / Add Card */}
                     <button
                         onClick={() => { resetForm(); setIsModalOpen(true); }}
-                        className="group relative flex flex-col items-center justify-center h-full min-h-[200px] rounded-3xl border border-dashed border-white/10 bg-transparent hover:bg-card/10 transition-colors p-6 text-center"
+                        className="group relative flex flex-col items-center justify-center h-full min-h-[200px] rounded-[10px] border border-dashed border-white/10 bg-transparent hover:bg-card/10 transition-colors p-6 text-center"
                     >
                         <div className="p-4 rounded-full bg-card/30 mb-4 group-hover:scale-110 transition-transform duration-300">
                             <Plus className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -236,7 +236,7 @@ function DashboardContent() {
             {/* Create Project Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="w-full max-w-md bg-card border border-white/10 p-8 rounded-3xl shadow-2xl scale-100 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                    <div className="w-full max-w-md bg-card border border-white/10 p-8 rounded-[10px] shadow-2xl scale-100 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-xl font-bold flex items-center gap-2">
                                 <Rocket className="w-5 h-5 text-primary" />

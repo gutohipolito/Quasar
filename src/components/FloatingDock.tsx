@@ -40,7 +40,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
 
     // Common Button Styles
     const btnClass = (isActive: boolean) => cn(
-        "relative flex h-12 w-12 items-center justify-center rounded-2xl transition-all border border-white/5",
+        "relative flex h-12 w-12 items-center justify-center rounded-[10px] transition-all border border-white/5",
         isActive ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:scale-105"
     );
 
@@ -52,7 +52,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     initial={{ y: 100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/60 p-2 shadow-2xl backdrop-blur-xl dark:bg-white/10 dark:border-white/20"
+                    className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-black/60 p-2 shadow-2xl backdrop-blur-xl dark:bg-white/10 dark:border-white/20"
                 >
                     {/* Navigation Group */}
                     <div className="flex items-center gap-1 rounded-xl bg-white/5 p-1">
@@ -270,10 +270,10 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                                 <button onClick={() => { onExport(); setIsMobileMenuOpen(false); }} className={btnClass(false)}>
                                     <DownloadCloud className="h-6 w-6" />
                                 </button>
-                                <button className={cn("col-span-1 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/5 bg-white/5")}>
+                                <button className={cn("col-span-1 flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/5 bg-white/5")}>
                                     <ThemeToggle />
                                 </button>
-                                <div className="flex items-center justify-center h-12 w-12 rounded-2xl bg-white/5 border border-white/5">
+                                <div className="flex items-center justify-center h-12 w-12 rounded-[10px] bg-white/5 border border-white/5">
                                     <LanguageToggle />
                                 </div>
                             </div>

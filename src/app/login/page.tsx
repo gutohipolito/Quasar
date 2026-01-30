@@ -71,7 +71,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Glass Card */}
-                    <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur-md shadow-2xl transition-all hover:bg-black/50 hover:border-white/20 hover:shadow-primary/10">
+                    <div className="group relative overflow-hidden rounded-[10px] border border-white/10 bg-black/40 p-8 backdrop-blur-md shadow-2xl transition-all hover:bg-black/50 hover:border-white/20 hover:shadow-primary/10">
 
                         {/* Header */}
                         <div className="mb-8 text-center">

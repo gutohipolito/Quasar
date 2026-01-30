@@ -16,7 +16,7 @@ export function ConversionFunnel({ data }: ConversionFunnelProps) {
     const maxCount = data.steps[0]?.count || 1;
 
     return (
-        <div className="w-full flex flex-col p-6 rounded-3xl border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
+        <div className="w-full flex flex-col p-6 rounded-[10px] border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
             {/* Header */}
             <div className="flex items-center gap-3 mb-4 relative z-10">
                 <div className="h-10 w-10 rounded-full bg-purple-500/20 flex items-center justify-center border border-purple-500/30">

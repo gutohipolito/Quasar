@@ -18,7 +18,7 @@ export function DayOfWeekChart({ data }: DayOfWeekChartProps) {
     const sortedData = [...data].sort((a, b) => (sorter[a.dayOfWeek] || 0) - (sorter[b.dayOfWeek] || 0));
 
     return (
-        <div className="w-full flex flex-col p-6 rounded-3xl border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
+        <div className="w-full flex flex-col p-6 rounded-[10px] border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6 relative z-10">
                 <div className="h-10 w-10 rounded-full bg-amber-500/20 flex items-center justify-center border border-amber-500/30">

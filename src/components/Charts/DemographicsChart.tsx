@@ -10,7 +10,7 @@ interface DemographicsChartProps {
 
 export function DemographicsChart({ data, title, color }: DemographicsChartProps) {
     return (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-[10px] border border-border bg-card p-6 shadow-sm">
             <div className="mb-6">
                 <h3 className="text-lg font-semibold text-foreground">{title}</h3>
             </div>

@@ -32,7 +32,7 @@ export function AIPulse() {
     }, [textToType]);
 
     return (
-        <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-primary/5 p-6 backdrop-blur-md shadow-lg">
+        <div className="relative overflow-hidden rounded-[10px] border border-primary/20 bg-primary/5 p-6 backdrop-blur-md shadow-lg">
             {/* Animated Gradient Background */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5 animate-pulse" />
 

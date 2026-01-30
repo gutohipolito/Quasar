@@ -12,7 +12,7 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
     const { t } = useLanguage();
 
     return (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-[10px] border border-border bg-card p-6 shadow-sm">
             <div className="mb-6">
                 <h3 className="text-lg font-semibold text-foreground">{t.charts.campaign_performance}</h3>
                 <p className="text-sm text-muted-foreground">{t.charts.campaign_subtitle}</p>

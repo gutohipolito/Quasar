@@ -154,7 +154,7 @@ export function Dashboard({ projectId }: { projectId?: string }) {
 
             {/* ERROR TOAST */}
             {error && (
-                <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500/90 text-white px-6 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 border border-red-400">
+                <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500/90 text-white px-6 py-3 rounded-[10px] shadow-2xl backdrop-blur-md flex items-center gap-3 border border-red-400">
                     <div className="bg-white/20 p-1.5 rounded-full"><AlertCircle className="w-5 h-5" /></div>
                     <span className="font-medium">{error}</span>
                     <button onClick={() => setError(null)} className="ml-2 opacity-80 hover:opacity-100">✕</button>
@@ -232,7 +232,7 @@ export function Dashboard({ projectId }: { projectId?: string }) {
 
                         {/* MAIN CHART - Center/Right Column (4 cols) */}
                         <div className="col-span-1 md:col-span-4 lg:col-span-4 h-[450px]">
-                            <div className="h-full rounded-3xl border border-white/10 bg-card/50 p-6 backdrop-blur-md shadow-2xl flex flex-col">
+                            <div className="h-full rounded-[10px] border border-white/10 bg-card/50 p-6 backdrop-blur-md shadow-2xl flex flex-col">
                                 <PerformanceChart data={data} />
                             </div>
                         </div>

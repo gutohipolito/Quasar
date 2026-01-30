@@ -22,7 +22,7 @@ export function StatsCard({ title, value, trend, trendUp, icon: Icon, delay = 0 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay }}
-            className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-primary/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-primary/10"
+            className="group relative overflow-hidden rounded-[10px] border border-white/5 bg-white/5 p-6 backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-primary/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-primary/10"
         >
             {/* Dynamic Gradient Blob on Hover */}
             <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/20 blur-3xl transition-all duration-500 group-hover:bg-primary/30" />

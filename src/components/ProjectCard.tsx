@@ -40,7 +40,7 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
     }, [apiKey]);
 
     return (
-        <div className="group relative overflow-hidden rounded-3xl border border-white/5 bg-black/40 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:bg-black/60 flex flex-col justify-between h-full min-h-[320px]">
+        <div className="group relative overflow-hidden rounded-[10px] border border-white/5 bg-black/40 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl hover:bg-black/60 flex flex-col justify-between h-full min-h-[320px]">
 
             {/* Ambient Background Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
@@ -54,9 +54,9 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
                     <div className="relative">
                         <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
                         {logoUrl ? (
-                            <img src={logoUrl} alt={name} className="relative w-14 h-14 rounded-2xl object-cover border border-white/10 bg-black/50 p-1 shadow-lg" />
+                            <img src={logoUrl} alt={name} className="relative w-14 h-14 rounded-[10px] object-cover border border-white/10 bg-black/50 p-1 shadow-lg" />
                         ) : (
-                            <div className="relative w-14 h-14 rounded-2xl bg-black/50 flex items-center justify-center text-primary font-bold border border-white/10 shadow-lg text-xl font-[family-name:var(--font-orbitron)]">
+                            <div className="relative w-14 h-14 rounded-[10px] bg-black/50 flex items-center justify-center text-primary font-bold border border-white/10 shadow-lg text-xl font-[family-name:var(--font-orbitron)]">
                                 {name.substring(0, 1).toUpperCase()}
                             </div>
                         )}
@@ -120,7 +120,7 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
 
                     <Link
                         href={`/project?id=${id}`}
-                        className="flex items-center gap-2 text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group/link border border-white/10 rounded-2xl px-4 py-2 hover:bg-white/5"
+                        className="flex items-center gap-2 text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider group/link border border-white/10 rounded-[10px] px-4 py-2 hover:bg-white/5"
                     >
                         Acessar
                         <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />

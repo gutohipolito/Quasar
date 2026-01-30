@@ -13,7 +13,7 @@ export function DeviceChart({ data }: DeviceChartProps) {
     const { t } = useLanguage();
 
     return (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-[10px] border border-border bg-card p-6 shadow-sm">
             <div className="mb-6">
                 <h3 className="text-lg font-semibold text-foreground">{t.charts.device_breakdown}</h3>
             </div>

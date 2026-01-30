@@ -17,7 +17,7 @@ export function GeoWidget({ data }: GeoWidgetProps) {
     const maxSpend = Math.max(...data.map(d => d.spend));
 
     return (
-        <div className="w-full flex flex-col p-6 rounded-3xl border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
+        <div className="w-full flex flex-col p-6 rounded-[10px] border border-white/10 bg-card/50 backdrop-blur-md shadow-xl overflow-hidden relative">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6 relative z-10">
                 <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30">

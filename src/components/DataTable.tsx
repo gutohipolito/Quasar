@@ -16,7 +16,7 @@ export function DataTable({ data }: DataTableProps) {
     const { t } = useLanguage();
 
     return (
-        <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
+        <div className="rounded-[10px] border border-border bg-card shadow-sm overflow-hidden">
             <div className="p-6 border-b border-border">
                 <h3 className="text-lg font-semibold text-foreground">{t.charts.detailed_campaigns}</h3>
             </div>

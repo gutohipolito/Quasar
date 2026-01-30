@@ -28,7 +28,7 @@ export function CreativesGallery({ data }: CreativesGalleryProps) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300"
+                        className="group flex flex-col overflow-hidden rounded-[10px] border border-border bg-card shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300"
                     >
                         {/* Image Section */}
                         <div className="relative aspect-[4/3] bg-muted/30">
