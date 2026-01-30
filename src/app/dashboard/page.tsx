@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Plus, LayoutGrid, Search, Rocket } from "lucide-react";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProtectedRoute } from "@/components/ProtectedRoute"; // Import ProtectedRoute
+import { cn } from "@/lib/utils";
 
 interface Project {
     id: string;
@@ -64,6 +65,7 @@ function DashboardContent() {
         reports: true,
         aiPulse: true
     });
+    const [isApiKeyEditable, setIsApiKeyEditable] = useState(true);
 
     // Load from local storage on mount (simple persistence)
     // KEY CHANGED to v2 to force reset/loading of new INITIAL_PROJECTS for current users
@@ -131,6 +133,7 @@ function DashboardContent() {
         setNewFeatures({ audience: true, creatives: true, reports: true, aiPulse: true });
         setEditingProject(null);
         setIsModalOpen(false);
+        setIsApiKeyEditable(true); // Reset to editable for new projects
     };
 
     const handleEditProject = (id: string) => {
@@ -147,6 +150,7 @@ function DashboardContent() {
                 setNewFeatures(project.features);
             }
             setIsModalOpen(true);
+            setIsApiKeyEditable(false); // Lock by default for editing
         }
     };
 
@@ -164,14 +168,11 @@ function DashboardContent() {
         <div className="min-h-screen bg-background p-4 md:p-8 pb-32 font-sans">
             {/* Header */}
             <div className="mx-auto max-w-[1600px] mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="p-3 bg-primary/10 rounded-[10px]">
-                        <LayoutGrid className="text-primary w-6 h-6" />
-                    </div>
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Project Hub</h1>
-                        <p className="text-muted-foreground">Gerencie todas as suas campanhas e clientes em um só lugar.</p>
-                    </div>
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-5xl font-black font-[family-name:var(--font-orbitron)] tracking-widest bg-[linear-gradient(110deg,#eab308,45%,#fef08a,55%,#eab308)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_3s_infinite] drop-shadow-2xl">
+                        QUASAR
+                    </h1>
+                    <p className="text-muted-foreground ml-1">Gerencie todas as suas campanhas e clientes em um só lugar.</p>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -230,17 +231,7 @@ function DashboardContent() {
                         />
                     ))}
 
-                    {/* Empty State / Add Card */}
-                    <button
-                        onClick={() => { resetForm(); setIsModalOpen(true); }}
-                        className="group relative flex flex-col items-center justify-center h-full min-h-[200px] rounded-[10px] border border-dashed border-white/10 bg-transparent hover:bg-card/10 transition-colors p-6 text-center"
-                    >
-                        <div className="p-4 rounded-full bg-card/30 mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <Plus className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
-                        </div>
-                        <h3 className="font-medium text-foreground mb-1">Criar Novo Projeto</h3>
-                        <p className="text-xs text-muted-foreground">Inicie um novo dashboard de campanha</p>
-                    </button>
+
                 </div>
             </div>
 
@@ -303,14 +294,37 @@ function DashboardContent() {
                             {/* Column 2: Technical Config */}
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Chave de API (Windsor.ai)</label>
-                                    <input
-                                        type="password"
-                                        placeholder={editingProject && editingProject.apiKey ? "•••••••••• (Configurada)" : "Cole a chave de API aqui"}
-                                        className="w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50 font-mono"
-                                        value={newApiKey}
-                                        onChange={(e) => setNewApiKey(e.target.value)}
-                                    />
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Chave de API (Windsor.ai)</label>
+                                        {!isApiKeyEditable && editingProject && (
+                                            <button
+                                                onClick={() => { setIsApiKeyEditable(true); setNewApiKey(""); }}
+                                                className="text-[10px] text-primary hover:underline font-medium uppercase tracking-wide"
+                                            >
+                                                Alterar Chave
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type={isApiKeyEditable ? "text" : "password"}
+                                            disabled={!isApiKeyEditable}
+                                            placeholder={!isApiKeyEditable ? "••••••••••••••••••••••••••••••••" : "Cole a chave de API aqui"}
+                                            className={cn(
+                                                "w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none transition-all font-mono",
+                                                isApiKeyEditable
+                                                    ? "ring-offset-background focus:ring-2 focus:ring-primary/50 border border-transparent focus:border-primary/30 focus:bg-secondary/50"
+                                                    : "cursor-not-allowed opacity-50 bg-secondary/10 text-muted-foreground border border-white/5"
+                                            )}
+                                            value={!isApiKeyEditable ? "" : newApiKey}
+                                            onChange={(e) => setNewApiKey(e.target.value)}
+                                        />
+                                        {!isApiKeyEditable && (
+                                            <div className="absolute inset-0 flex items-center px-4 pointer-events-none">
+                                                <span className="text-muted-foreground/50 text-sm tracking-widest font-mono">••••••••••••••••••••••••</span>
+                                            </div>
+                                        )}
+                                    </div>
                                     <p className="text-[10px] text-muted-foreground">Necessário para carregar dados reais das campanhas.</p>
                                 </div>
 
