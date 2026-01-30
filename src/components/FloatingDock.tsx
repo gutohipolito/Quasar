@@ -1,5 +1,3 @@
-"use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import {
     LayoutGrid,
@@ -15,7 +13,8 @@ import {
     Calendar as CalendarIcon,
     Menu,
     X,
-    Eye
+    Eye,
+    AlertCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -32,12 +31,24 @@ interface FloatingDockProps {
     dateRange: DateRange;
     setDateRange: (d: DateRange) => void;
     onExport: () => void;
-    onToggleSettings: () => void; // New prop for settings
+    visibleWidgets?: Record<string, boolean>;
+    onToggleWidget?: (key: string) => void;
 }
 
-export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, dateRange, setDateRange, onExport, onToggleSettings }: FloatingDockProps) {
+export function FloatingDock({
+    activeTab,
+    setActiveTab,
+    platform,
+    setPlatform,
+    dateRange,
+    setDateRange,
+    onExport,
+    visibleWidgets,
+    onToggleWidget
+}: FloatingDockProps) {
     const { t } = useLanguage();
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Common Button Styles
@@ -57,7 +68,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-black/60 p-2 shadow-2xl backdrop-blur-xl dark:bg-white/10 dark:border-white/20"
                 >
                     {/* Navigation Group */}
-                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1 relative">
                         <motion.button
                             whileHover={{ scale: 1.1, y: -2 }}
                             whileTap={{ scale: 0.95 }}
@@ -117,7 +128,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     <div className="h-8 w-px bg-white/10" />
 
                     {/* Platform Group */}
-                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1 relative">
                         {(["all", "google", "facebook"] as const).map((p) => (
                             <motion.button
                                 key={p}
@@ -151,58 +162,115 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     <div className="h-8 w-px bg-white/10" />
 
                     {/* Date and Settings Groups */}
-                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
-                        <motion.button
-                            whileHover={{ scale: 1.1, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-                            className={cn(
-                                "relative flex h-10 w-10 items-center justify-center rounded-lg transition-all",
-                                isCalendarOpen ? "bg-white/10 text-primary" : "text-muted-foreground hover:bg-white/10"
-                            )}
-                        >
-                            <CalendarIcon className="h-5 w-5" />
-                        </motion.button>
-                        {/* Simple Dropdown for Date Selection */}
-                        {isCalendarOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                animate={{ opacity: 1, y: -60, scale: 1 }}
-                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                className="absolute bottom-full left-0 mb-2 w-48 overflow-hidden rounded-[10px] border border-white/10 bg-black/90 p-1 shadow-2xl backdrop-blur-xl"
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1 relative">
+                        {/* CALENDAR TOGGLE */}
+                        <div className="relative">
+                            <motion.button
+                                whileHover={{ scale: 1.1, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => {
+                                    setIsCalendarOpen(!isCalendarOpen);
+                                    setIsSettingsOpen(false); // Close others
+                                }}
+                                className={cn(
+                                    "relative flex h-10 w-10 items-center justify-center rounded-lg transition-all",
+                                    isCalendarOpen ? "bg-white/10 text-primary" : "text-muted-foreground hover:bg-white/10"
+                                )}
                             >
-                                {(['last_7d', 'last_30d', 'this_month', 'last_month'] as const).map((range) => (
-                                    <button
-                                        key={range}
-                                        onClick={() => {
-                                            setDateRange(range);
-                                            setIsCalendarOpen(false);
-                                        }}
-                                        className={cn(
-                                            "w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
-                                            dateRange === range
-                                                ? "bg-primary/20 text-primary"
-                                                : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
-                                        )}
+                                <CalendarIcon className="h-5 w-5" />
+                            </motion.button>
+
+                            <AnimatePresence>
+                                {isCalendarOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 overflow-hidden rounded-[10px] border border-white/10 bg-black/90 p-1 shadow-2xl backdrop-blur-xl z-[60]"
                                     >
-                                        {t.dates[range]}
-                                    </button>
-                                ))}
-                            </motion.div>
-                        )}
+                                        {(['last_7d', 'last_30d', 'this_month', 'last_month'] as const).map((range) => (
+                                            <button
+                                                key={range}
+                                                onClick={() => {
+                                                    setDateRange(range);
+                                                    setIsCalendarOpen(false);
+                                                }}
+                                                className={cn(
+                                                    "w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
+                                                    dateRange === range
+                                                        ? "bg-primary/20 text-primary"
+                                                        : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                                                )}
+                                            >
+                                                {t.dates[range]}
+                                            </button>
+                                        ))}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
 
                         <div className="h-8 w-px mx-1 bg-white/10" />
 
-                        {/* SETTINGS TOGGLE (NEW) */}
-                        <motion.button
-                            whileHover={{ scale: 1.1, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={onToggleSettings}
-                            className="relative flex h-10 w-10 items-center justify-center rounded-lg transition-all text-muted-foreground hover:bg-white/10"
-                            title="Personalizar Visualização"
-                        >
-                            <Eye className="h-5 w-5" />
-                        </motion.button>
+                        {/* SETTINGS TOGGLE */}
+                        <div className="relative">
+                            <motion.button
+                                whileHover={{ scale: 1.1, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => {
+                                    setIsSettingsOpen(!isSettingsOpen);
+                                    setIsCalendarOpen(false); // Close others
+                                }}
+                                className={cn(
+                                    "relative flex h-10 w-10 items-center justify-center rounded-lg transition-all",
+                                    isSettingsOpen ? "bg-white/10 text-primary" : "text-muted-foreground hover:bg-white/10"
+                                )}
+                                title="Personalizar Visualização"
+                            >
+                                <Eye className="h-5 w-5" />
+                            </motion.button>
+
+                            <AnimatePresence>
+                                {isSettingsOpen && visibleWidgets && onToggleWidget && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 rounded-[16px] border border-white/10 bg-black/90 backdrop-blur-xl p-5 shadow-2xl z-[60]"
+                                    >
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Visualização</h3>
+                                            <button onClick={() => setIsSettingsOpen(false)} className="text-muted-foreground hover:text-white">
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                        <div className="space-y-3">
+                                            {/* Mapping custom labels to widget keys */}
+                                            {Object.entries({
+                                                hero_stats: "Cartões Principais",
+                                                main_chart: "Gráfico Principal",
+                                                secondary_stats: "Métricas Secundárias",
+                                                geo: "Mapa Geográfico",
+                                                funnel: "Funil de Conversão",
+                                                weekly: "Atividade Semanal",
+                                                table: "Tabela de Dados"
+                                            }).map(([key, label]) => (
+                                                <label key={key} className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                                    <span>{label}</span>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={visibleWidgets[key]}
+                                                        onChange={() => onToggleWidget(key)}
+                                                        className="accent-primary w-4 h-4 rounded"
+                                                    />
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
 
                         <motion.button whileHover={{ scale: 1.1 }} onClick={onExport} className="h-9 w-9 flex items-center justify-center rounded-full hover:bg-white/10 text-muted-foreground">
                             <DownloadCloud className="h-4 w-4" />
@@ -289,7 +357,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                                     <DownloadCloud className="h-6 w-6" />
                                 </button>
 
-                                <button onClick={() => { onToggleSettings(); setIsMobileMenuOpen(false); }} className={btnClass(false)}>
+                                <button onClick={() => { setIsSettingsOpen(true); setIsMobileMenuOpen(false); }} className={btnClass(false)}>
                                     <Eye className="h-6 w-6" />
                                 </button>
 

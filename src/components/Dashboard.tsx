@@ -90,14 +90,12 @@ export function Dashboard({ projectId }: { projectId?: string }) {
         };
     });
 
-    const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
-
     // Save widget preference
     useEffect(() => {
         localStorage.setItem("ads_dashboard_widgets_v1", JSON.stringify(visibleWidgets));
     }, [visibleWidgets]);
 
-    const toggleWidget = (key: keyof typeof visibleWidgets) => {
+    const toggleWidget = (key: string) => {
         setVisibleWidgets((prev: any) => ({ ...prev, [key]: !prev[key] }));
     };
 
@@ -216,46 +214,8 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                         </div>
                     )}
                 </div>
-                {/* SETTINGS MODAL (ABSOLUTE POSITIONED) */}
-                {isCustomizeOpen && (
-                    <div className="absolute top-16 right-0 z-50 w-72 bg-black/90 backdrop-blur-xl border border-white/10 rounded-[16px] p-5 shadow-2xl animate-in fade-in slide-in-from-top-2">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Visualização</h3>
-                            <button onClick={() => setIsCustomizeOpen(false)} className="text-muted-foreground hover:text-white"><AlertCircle className="w-4 h-4 rotate-45" /></button>
-                        </div>
-                        <div className="space-y-3">
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Cartões Principais (Spend/Rev)</span>
-                                <input type="checkbox" checked={visibleWidgets.hero_stats} onChange={() => toggleWidget('hero_stats')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Gráfico Principal</span>
-                                <input type="checkbox" checked={visibleWidgets.main_chart} onChange={() => toggleWidget('main_chart')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Métricas Secundárias (ROAS/CPC)</span>
-                                <input type="checkbox" checked={visibleWidgets.secondary_stats} onChange={() => toggleWidget('secondary_stats')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Mapa Geográfico</span>
-                                <input type="checkbox" checked={visibleWidgets.geo} onChange={() => toggleWidget('geo')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Funil de Conversão</span>
-                                <input type="checkbox" checked={visibleWidgets.funnel} onChange={() => toggleWidget('funnel')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Atividade Semanal</span>
-                                <input type="checkbox" checked={visibleWidgets.weekly} onChange={() => toggleWidget('weekly')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
-                                <span>Tabela de Dados</span>
-                                <input type="checkbox" checked={visibleWidgets.table} onChange={() => toggleWidget('table')} className="accent-primary w-4 h-4 rounded" />
-                            </label>
-                        </div>
-                    </div>
-                )}
             </div>
+
 
             {/* Main Content Area */}
             <div className="mx-auto max-w-[1600px] space-y-8 relative z-10 text-foreground">
@@ -413,20 +373,23 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                 dateRange={dateRange}
                 setDateRange={setDateRange}
                 onExport={handleExportPDF}
-                onToggleSettings={() => setIsCustomizeOpen(!isCustomizeOpen)}
+                visibleWidgets={visibleWidgets}
+                onToggleWidget={toggleWidget}
             />
 
             {/* Hidden Report View for PDF Generation */}
-            {features.reports && (
-                <div id="report-container" className="fixed top-0 left-[-9999px] w-[1200px] h-auto -z-50 opacity-0 pointer-events-none overflow-hidden">
-                    <ReportView
-                        summary={summary}
-                        audience={audience}
-                        creatives={creatives}
-                        platform={platform}
-                    />
-                </div>
-            )}
+            {
+                features.reports && (
+                    <div id="report-container" className="fixed top-0 left-[-9999px] w-[1200px] h-auto -z-50 opacity-0 pointer-events-none overflow-hidden">
+                        <ReportView
+                            summary={summary}
+                            audience={audience}
+                            creatives={creatives}
+                            platform={platform}
+                        />
+                    </div>
+                )
+            }
         </div>
     );
 }

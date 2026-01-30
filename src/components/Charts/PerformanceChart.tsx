@@ -12,16 +12,16 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
     const { t } = useLanguage();
 
     return (
-        <div className="rounded-[10px] border border-border bg-card p-6 shadow-sm">
-            <div className="mb-6">
+        <div className="flex flex-col h-full w-full">
+            <div className="mb-4">
                 <h3 className="text-lg font-semibold text-foreground">{t.charts.campaign_performance}</h3>
                 <p className="text-sm text-muted-foreground">{t.charts.campaign_subtitle}</p>
             </div>
 
-            {/* Explicitly sized container for Recharts */}
-            <div className="h-[350px] w-full min-w-0">
+            {/* Fills remaining space */}
+            <div className="flex-1 min-h-0 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
+                    <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                         <defs>
                             <linearGradient id="colorImpressions" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.4} />
@@ -31,17 +31,6 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
                                 <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
                                 <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                             </linearGradient>
-                            {/* Glow Filter */}
-                            <filter id="glow" height="200%">
-                                <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-                                <feOffset in="blur" dx="0" dy="0" result="offsetBlur" />
-                                <feFlood floodColor="#8b5cf6" floodOpacity="0.5" result="offsetColor" />
-                                <feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur" />
-                                <feMerge>
-                                    <feMergeNode in="offsetBlur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                         <XAxis
@@ -79,7 +68,6 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
                             fillOpacity={1}
                             fill="url(#colorImpressions)"
                             strokeWidth={3}
-                        // filter="url(#glow)" // Optional: can be heavy on performance, enable if smooth
                         />
                         <Area
                             type="monotone"
