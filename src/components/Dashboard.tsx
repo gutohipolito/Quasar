@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, BarChart3, Coins, CreditCard, DollarSign, MousePointerClick, RefreshCcw, ShoppingBag, TrendingUp, LayoutGrid, AlertCircle, ArrowLeft } from "lucide-react";
+import { Activity, BarChart3, Coins, CreditCard, DollarSign, MousePointerClick, RefreshCcw, ShoppingBag, TrendingUp, LayoutGrid, AlertCircle, ArrowLeft, Users, DownloadCloud, Settings } from "lucide-react";
 import { AdData, fetchAdsData, fetchAudienceData, fetchCreativesData, SummaryMetrics, AudienceData, Creative, DateRange } from "@/lib/windsor";
 import { StatsCard } from "@/components/StatsCard";
 import { PerformanceChart } from "@/components/Charts/PerformanceChart";
@@ -11,7 +11,7 @@ import { DeviceChart } from "@/components/Charts/DeviceChart";
 import { CreativesGallery } from "@/components/CreativesGallery";
 import { AIPulse } from "@/components/AIPulse";
 import { ReportView } from "@/components/ReportView";
-import { FloatingDock } from "@/components/FloatingDock";
+
 import { cn, formatCurrency } from "@/lib/utils";
 import { useLanguage } from "@/components/LanguageProvider";
 import { toPng } from "html-to-image";
@@ -21,6 +21,8 @@ import { GeoWidget } from "@/components/Advanced/GeoWidget";
 import { ConversionFunnel } from "@/components/Advanced/ConversionFunnel";
 import { DayOfWeekChart } from "@/components/Advanced/DayOfWeekChart";
 import { GeoData, DaypartingData, FunnelData, fetchGeoData, fetchDaypartingData, fetchFunnelData } from "@/lib/windsor";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
 
 // Interface for Project structure based on localStorage
 interface Project {
@@ -61,6 +63,43 @@ export function Dashboard({ projectId }: { projectId?: string }) {
         reports: true,
         aiPulse: true
     });
+
+    // State for Widget Visibility (Customize View)
+    // Initialize from localStorage if available
+    const [visibleWidgets, setVisibleWidgets] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem("ads_dashboard_widgets_v1");
+            return saved ? JSON.parse(saved) : {
+                hero_stats: true,
+                main_chart: true,
+                secondary_stats: true,
+                geo: true,
+                funnel: true,
+                weekly: true,
+                table: true
+            };
+        }
+        return {
+            hero_stats: true,
+            main_chart: true,
+            secondary_stats: true,
+            geo: true,
+            funnel: true,
+            weekly: true,
+            table: true
+        };
+    });
+
+    const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
+
+    // Save widget preference
+    useEffect(() => {
+        localStorage.setItem("ads_dashboard_widgets_v1", JSON.stringify(visibleWidgets));
+    }, [visibleWidgets]);
+
+    const toggleWidget = (key: keyof typeof visibleWidgets) => {
+        setVisibleWidgets((prev: any) => ({ ...prev, [key]: !prev[key] }));
+    };
 
     const loadData = async () => {
         setLoading(true);
@@ -126,13 +165,14 @@ export function Dashboard({ projectId }: { projectId?: string }) {
     }, [platform, projectId, dateRange]);
 
     const handleExportPDF = async () => {
-        const element = document.getElementById("report-container");
+        const element = document.getElementById("dashboard-root"); // Capture full dashboard
         if (!element) return;
 
         try {
+            // Temporarily hide UI controls for clean export if needed
             const dataUrl = await toPng(element, {
                 cacheBust: true,
-                backgroundColor: '#ffffff',
+                backgroundColor: '#0f172a', // Match dark theme bg
                 pixelRatio: 2
             });
 
@@ -143,14 +183,14 @@ export function Dashboard({ projectId }: { projectId?: string }) {
             });
 
             pdf.addImage(dataUrl, "PNG", 0, 0, element.offsetWidth, element.offsetHeight);
-            pdf.save(`ads-report-full-${platform}-${new Date().toISOString().split('T')[0]}.pdf`);
+            pdf.save(`ads-report-${platform}-${new Date().toISOString().split('T')[0]}.pdf`);
         } catch (error) {
             console.error("PDF Export failed:", error);
         }
     };
 
     return (
-        <div id="dashboard-root" className="min-h-screen bg-transparent p-4 pb-32 md:p-8 md:pb-40 transition-colors duration-300 relative">
+        <div id="dashboard-root" className="min-h-screen bg-transparent p-4 pb-32 md:p-8 md:pb-40 transition-colors duration-300 relative font-sans">
             <StarryBackground />
 
             {/* ERROR TOAST */}
@@ -162,41 +202,176 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                 </div>
             )}
 
-            {/* Top Bar Branding */}
-            <div className="mx-auto max-w-[1600px] mb-8 flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-4">
-                    <a href="/dashboard" className="p-2 rounded-[10px] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
-                        <ArrowLeft className="w-5 h-5" />
-                    </a>
-                    {projectLogo ? (
+            {/* ================= HEADER CONTROL CENTER ================= */}
+            <div className="mx-auto max-w-[1600px] mb-8 relative z-20">
+                <div className="flex flex-col xl:flex-row items-center justify-between gap-6 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[20px] p-4 shadow-2xl">
+
+                    {/* LEFT: Branding & Config */}
+                    <div className="flex items-center gap-6 w-full xl:w-auto justify-between xl:justify-start">
                         <div className="flex items-center gap-4">
-                            <img
-                                src={projectLogo}
-                                alt="Company Logo"
-                                className="h-12 w-auto max-w-[200px] object-contain"
-                            />
+                            <a href="/dashboard" className="p-2.5 rounded-[10px] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
+                                <ArrowLeft className="w-5 h-5" />
+                            </a>
+                            {projectLogo ? (
+                                <img src={projectLogo} alt="Logo" className="h-10 w-auto max-w-[150px] object-contain" />
+                            ) : (
+                                <div className="h-10 w-10 bg-primary/20 rounded-[10px] flex items-center justify-center">
+                                    <Activity className="w-6 h-6 text-primary" />
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <img
-                            src="https://framerusercontent.com/images/fNyuw9UGY9U2aNeDDdz0VsA27vg.svg"
-                            alt="Brand Logo"
-                            className="h-8 w-auto logo-brand transition-all duration-300"
-                        />
-                    )}
+
+                        {/* Mobile Menu Button could go here */}
+                    </div>
+
+                    {/* CENTER: Navigation Tabs */}
+                    <div className="flex items-center gap-1 p-1 bg-white/5 rounded-[12px] border border-white/5 overflow-x-auto max-w-full">
+                        <button
+                            onClick={() => setActiveTab("overview")}
+                            className={cn(
+                                "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
+                                activeTab === "overview" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                            )}
+                        >
+                            <LayoutGrid className="w-4 h-4" />
+                            <span>{t.tabs.overview}</span>
+                        </button>
+
+                        {features.audience && (
+                            <button
+                                onClick={() => setActiveTab("audience")}
+                                className={cn(
+                                    "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
+                                    activeTab === "audience" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                                )}
+                            >
+                                <Users className="w-4 h-4" />
+                                <span>{t.tabs.audience}</span>
+                            </button>
+                        )}
+
+                        {features.creatives && (
+                            <button
+                                onClick={() => setActiveTab("creatives")}
+                                className={cn(
+                                    "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
+                                    activeTab === "creatives" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                                )}
+                            >
+                                <BarChart3 className="w-4 h-4" />
+                                <span>{t.tabs.creatives}</span>
+                            </button>
+                        )}
+                    </div>
+
+                    {/* RIGHT: Filters & Tools */}
+                    <div className="flex items-center gap-3 w-full xl:w-auto justify-end flex-wrap">
+
+                        {/* Platform Toggle */}
+                        <div className="flex items-center bg-white/5 rounded-[10px] p-1 border border-white/5">
+                            {(["all", "google", "facebook"] as const).map((p) => (
+                                <button
+                                    key={p}
+                                    onClick={() => setPlatform(p)}
+                                    className={cn(
+                                        "w-9 h-9 flex items-center justify-center rounded-[8px] transition-all",
+                                        platform === p ? "bg-white/10 text-primary shadow-sm" : "text-muted-foreground hover:text-white"
+                                    )}
+                                    title={t.platforms[p]}
+                                >
+                                    {p === "all" ? "All" : p === "google" ? "G" : "F"}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Date Range */}
+                        <select
+                            value={dateRange}
+                            onChange={(e) => setDateRange(e.target.value as DateRange)}
+                            className="bg-white/5 border border-white/10 text-sm rounded-[10px] px-3 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
+                        >
+                            <option value="last_7d">{t.dates.last_7d}</option>
+                            <option value="last_30d">{t.dates.last_30d}</option>
+                            <option value="this_month">{t.dates.this_month}</option>
+                            <option value="last_month">{t.dates.last_month}</option>
+                        </select>
+
+                        <div className="w-px h-8 bg-white/10 mx-1"></div>
+
+                        {/* Customize View Toggle */}
+                        <button
+                            onClick={() => setIsCustomizeOpen(!isCustomizeOpen)}
+                            className={cn(
+                                "flex items-center justify-center w-10 h-10 rounded-[10px] border transition-colors",
+                                isCustomizeOpen ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
+                            )}
+                            title="Personalizar Visualização"
+                        >
+                            <Settings className="w-5 h-5" />
+                        </button>
+
+                        {/* Export */}
+                        <button
+                            onClick={handleExportPDF}
+                            className="flex items-center justify-center w-10 h-10 rounded-[10px] bg-white/5 border border-white/10 text-muted-foreground hover:bg-white/10 hover:text-white transition-colors"
+                            title="Exportar PDF"
+                        >
+                            <DownloadCloud className="w-5 h-5" />
+                        </button>
+
+                        <div className="flex bg-white/5 rounded-[10px] p-0.5 border border-white/10">
+                            <ThemeToggle />
+                        </div>
+                        <div className="flex bg-white/5 rounded-[10px] p-0.5 border border-white/10">
+                            <LanguageToggle />
+                        </div>
+                    </div>
                 </div>
+
+                {/* CUSTOMIZE MODAL DROPDOWN */}
+                {isCustomizeOpen && (
+                    <div className="absolute top-full right-0 mt-4 w-72 bg-black/90 backdrop-blur-xl border border-white/10 rounded-[16px] p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+                        <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">Visualização</h3>
+                        <div className="space-y-3">
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Cartões Principais (Spend/Rev)</span>
+                                <input type="checkbox" checked={visibleWidgets.hero_stats} onChange={() => toggleWidget('hero_stats')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Gráfico Principal</span>
+                                <input type="checkbox" checked={visibleWidgets.main_chart} onChange={() => toggleWidget('main_chart')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Métricas Secundárias (ROAS/CPC)</span>
+                                <input type="checkbox" checked={visibleWidgets.secondary_stats} onChange={() => toggleWidget('secondary_stats')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Mapa Geográfico</span>
+                                <input type="checkbox" checked={visibleWidgets.geo} onChange={() => toggleWidget('geo')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Funil de Conversão</span>
+                                <input type="checkbox" checked={visibleWidgets.funnel} onChange={() => toggleWidget('funnel')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Atividade Semanal</span>
+                                <input type="checkbox" checked={visibleWidgets.weekly} onChange={() => toggleWidget('weekly')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                            <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
+                                <span>Tabela de Dados</span>
+                                <input type="checkbox" checked={visibleWidgets.table} onChange={() => toggleWidget('table')} className="accent-primary w-4 h-4 rounded" />
+                            </label>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Main Content Area */}
-            <div className="mx-auto max-w-[1600px] space-y-8 relative z-10">
+            <div className="mx-auto max-w-[1600px] space-y-8 relative z-10 text-foreground">
 
-                {/* Minimal Hero Header */}
-                <div className="mb-8 pt-4">
-                    <h1 className="text-4xl font-extrabold text-foreground tracking-tight bg-gradient-to-r from-foreground to-foreground/50 bg-clip-text text-transparent sm:text-5xl">
-                        {t.header.title}
-                    </h1>
-                    <p className="mt-2 text-lg text-muted-foreground max-w-2xl">
-                        {t.header.subtitle}
-                    </p>
+                {/* Minimal Hero Header - Removed title/subtitle to save space as it is in header now? No, keep it for context but make smaller */}
+                <div className="hidden">
+                    {/* Hidden for now to clean up UI, title is kind of redundant with Nav Tabs */}
                 </div>
 
                 {/* ================= OVERVIEW BENTO GRID ================= */}
@@ -204,86 +379,100 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 animate-in fade-in zoom-in-95 duration-700">
 
                         {/* HERO STATS - Left Column (2 cols) */}
-                        <div className="col-span-1 md:col-span-2 lg:col-span-2 space-y-6">
-                            <StatsCard
-                                title={t.metrics.total_spend}
-                                value={summary ? formatCurrency(summary.totalSpend) : "..."}
-                                icon={CreditCard}
-                                delay={0.1}
-                                trend="+12.5%"
-                                trendUp={true}
-                            />
-                            <StatsCard
-                                title={t.metrics.revenue}
-                                value={summary ? formatCurrency(summary.totalConversionValue) : "..."}
-                                icon={DollarSign}
-                                delay={0.2}
-                                trend="+18.2%"
-                                trendUp={true}
-                            />
-                            <StatsCard
-                                title={t.metrics.conversions}
-                                value={summary ? summary.totalConversions.toLocaleString() : "..."}
-                                icon={ShoppingBag}
-                                delay={0.3}
-                                trend="+5.1%"
-                                trendUp={true}
-                            />
-                        </div>
+                        {visibleWidgets.hero_stats && (
+                            <div className="col-span-1 md:col-span-2 lg:col-span-2 space-y-6">
+                                <StatsCard
+                                    title={t.metrics.total_spend}
+                                    value={summary ? formatCurrency(summary.totalSpend) : "..."}
+                                    icon={CreditCard}
+                                    delay={0.1}
+                                    trend="+12.5%"
+                                    trendUp={true}
+                                />
+                                <StatsCard
+                                    title={t.metrics.revenue}
+                                    value={summary ? formatCurrency(summary.totalConversionValue) : "..."}
+                                    icon={DollarSign}
+                                    delay={0.2}
+                                    trend="+18.2%"
+                                    trendUp={true}
+                                />
+                                <StatsCard
+                                    title={t.metrics.conversions}
+                                    value={summary ? summary.totalConversions.toLocaleString() : "..."}
+                                    icon={ShoppingBag}
+                                    delay={0.3}
+                                    trend="+5.1%"
+                                    trendUp={true}
+                                />
+                            </div>
+                        )}
 
                         {/* MAIN CHART - Center/Right Column (4 cols) */}
-                        <div className="col-span-1 md:col-span-4 lg:col-span-4 h-[450px]">
-                            <div className="h-full rounded-[10px] border border-white/10 bg-card/50 p-6 backdrop-blur-md shadow-2xl flex flex-col">
-                                <PerformanceChart data={data} />
+                        {visibleWidgets.main_chart && (
+                            <div className={cn("col-span-1 md:col-span-4 h-[450px]", visibleWidgets.hero_stats ? "lg:col-span-4" : "lg:col-span-6")}>
+                                <div className="h-full rounded-[10px] border border-white/10 bg-card/50 p-6 backdrop-blur-md shadow-2xl flex flex-col">
+                                    <PerformanceChart data={data} />
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* SECONDARY STATS STRIP - Bottom Row (Full Width) */}
-                        <div className="col-span-1 md:col-span-4 lg:col-span-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <StatsCard
-                                title={t.metrics.roas}
-                                value={summary ? `${summary.avgRoas.toFixed(2)}x` : "..."}
-                                icon={TrendingUp}
-                                delay={0.4}
-                                trend="-0.5%"
-                                trendUp={false}
-                            />
-                            <StatsCard
-                                title={t.metrics.clicks}
-                                value={summary ? summary.totalClicks.toLocaleString() : "..."}
-                                icon={MousePointerClick}
-                                delay={0.6}
-                            />
-                            <StatsCard
-                                title={t.metrics.avg_cpc}
-                                value={summary ? formatCurrency(summary.avgCpc) : "..."}
-                                icon={Coins}
-                                delay={0.7}
-                            />
-                        </div>
+                        {visibleWidgets.secondary_stats && (
+                            <div className="col-span-1 md:col-span-4 lg:col-span-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <StatsCard
+                                    title={t.metrics.roas}
+                                    value={summary ? `${summary.avgRoas.toFixed(2)}x` : "..."}
+                                    icon={TrendingUp}
+                                    delay={0.4}
+                                    trend="-0.5%"
+                                    trendUp={false}
+                                />
+                                <StatsCard
+                                    title={t.metrics.clicks}
+                                    value={summary ? summary.totalClicks.toLocaleString() : "..."}
+                                    icon={MousePointerClick}
+                                    delay={0.6}
+                                />
+                                <StatsCard
+                                    title={t.metrics.avg_cpc}
+                                    value={summary ? formatCurrency(summary.avgCpc) : "..."}
+                                    icon={Coins}
+                                    delay={0.7}
+                                />
+                            </div>
+                        )}
 
-                        {/* ADVANCED INSIGHTS STACK (NEW) */}
+                        {/* ADVANCED INSIGHTS STACK */}
                         <div className="col-span-1 md:col-span-4 lg:col-span-6 space-y-3">
                             {/* Geo Widget */}
-                            <div className="w-full min-w-0">
-                                <GeoWidget data={geo} />
-                            </div>
+                            {visibleWidgets.geo && (
+                                <div className="w-full min-w-0">
+                                    <GeoWidget data={geo} />
+                                </div>
+                            )}
 
                             {/* Funnel Widget */}
-                            <div className="w-full min-w-0">
-                                {funnel && <ConversionFunnel data={funnel} />}
-                            </div>
+                            {visibleWidgets.funnel && (
+                                <div className="w-full min-w-0">
+                                    {funnel && <ConversionFunnel data={funnel} />}
+                                </div>
+                            )}
 
                             {/* Weekly Activity */}
-                            <div className="w-full min-w-0 min-h-[400px]">
-                                <DayOfWeekChart data={dayData} />
-                            </div>
+                            {visibleWidgets.weekly && (
+                                <div className="w-full min-w-0 min-h-[400px]">
+                                    <DayOfWeekChart data={dayData} />
+                                </div>
+                            )}
                         </div>
 
                         {/* DATA TABLE - Bottom Row (Full Width) */}
-                        <div className="col-span-1 md:col-span-4 lg:col-span-6">
-                            <DataTable data={data} />
-                        </div>
+                        {visibleWidgets.table && (
+                            <div className="col-span-1 md:col-span-4 lg:col-span-6">
+                                <DataTable data={data} />
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -318,21 +507,9 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                 )}
 
             </div>
-
-            {/* FLOATING HUD NAVIGATION */}
-            <FloatingDock
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                platform={platform}
-                setPlatform={setPlatform}
-                dateRange={dateRange}
-                setDateRange={setDateRange}
-                onExport={handleExportPDF}
-            />
-
             {/* Hidden Report View for PDF Generation */}
             {features.reports && (
-                <div className="fixed top-0 left-[-9999px] w-[1200px] h-auto -z-50 opacity-0 pointer-events-none overflow-hidden">
+                <div id="report-container" className="fixed top-0 left-[-9999px] w-[1200px] h-auto -z-50 opacity-0 pointer-events-none overflow-hidden">
                     <ReportView
                         summary={summary}
                         audience={audience}

@@ -174,13 +174,24 @@ function DashboardContent() {
                     </div>
                 </div>
 
-                <button
-                    onClick={() => { resetForm(); setIsModalOpen(true); }}
-                    className="group flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-[10px] font-medium hover:opacity-90 transition-opacity"
-                >
-                    <Plus size={20} className="transition-transform group-hover:rotate-90" />
-                    <span>Novo Projeto</span>
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => { resetForm(); setIsModalOpen(true); }}
+                        className="group flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-[10px] font-medium hover:opacity-90 transition-opacity"
+                    >
+                        <Plus size={20} className="transition-transform group-hover:rotate-90" />
+                        <span>Novo Projeto</span>
+                    </button>
+                    <button
+                        onClick={() => {
+                            document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+                            window.location.href = "/login";
+                        }}
+                        className="flex items-center gap-2 bg-red-500/10 text-red-500 border border-red-500/20 px-5 py-3 rounded-[10px] font-medium hover:bg-red-500/20 transition-all"
+                    >
+                        <span>Sair</span>
+                    </button>
+                </div>
             </div>
 
             {/* Main Grid */}
