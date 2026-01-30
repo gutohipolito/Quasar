@@ -187,9 +187,8 @@ export async function fetchCreativesData(apiKey: string | null): Promise<Creativ
 
     try {
         // Fetch fields relevant to creative performance
-        // Note: 'ad_name' often serves as the creative identifier if 'ad_creative_name' isn't available
-        // 'image_url' or 'video_url' might vary by connector, we try 'ad_image_url' which is common
-        const fields = "source,campaign,ad_name,clicks,impressions,spend,conversions,ctr,roas,ad_image_url,url";
+        // Expanded list to catch more image variations across platforms (FB, Google, TikTok etc)
+        const fields = "source,campaign,ad_name,clicks,impressions,spend,conversions,ctr,roas,ad_image_url,url,preview_url,thumbnail_url,picture,full_picture,creative_url";
         const url = `https://connectors.windsor.ai/all?api_key=${apiKey}&date_preset=last_30d&fields=${fields}`;
 
         const response = await fetch(url);
@@ -198,22 +197,34 @@ export async function fetchCreativesData(apiKey: string | null): Promise<Creativ
         const json = await response.json();
 
         // Map and allow for some missing images by using placeholders if needed
-        return json.data.map((item: any, i: number) => ({
-            id: `creative_${i}`,
-            name: item.ad_name || item.campaign || "Anúncio sem Nome",
-            campaign: item.campaign || "Campanha Desconhecida",
-            url: item.ad_image_url || item.url || "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80", // Fallback image
-            thumbnail: item.ad_image_url || item.url || "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
-            type: "image", // Simplified assumption, could check file extension
-            format: "feed", // Simplified
-            platform: item.source === "facebook" ? "facebook" : "google",
-            spend: safeNum(item.spend),
-            impressions: safeNum(item.impressions),
-            clicks: safeNum(item.clicks),
-            conversions: safeNum(item.conversions),
-            ctr: safeNum(item.ctr),
-            roas: safeNum(item.roas)
-        })).filter((c: Creative) => c.spend > 0).slice(0, 12); // Limit to top 12 active creatives for gallery
+        return json.data.map((item: any, i: number) => {
+            // Prioritized Fallback Chain for Image URL
+            const imageUrl = item.ad_image_url ||
+                item.full_picture ||
+                item.picture ||
+                item.preview_url ||
+                item.thumbnail_url ||
+                item.url ||
+                item.creative_url ||
+                "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80"; // Final Fallback
+
+            return {
+                id: `creative_${i}`,
+                name: item.ad_name || item.campaign || "Anúncio sem Nome",
+                campaign: item.campaign || "Campanha Desconhecida",
+                url: imageUrl,
+                thumbnail: imageUrl,
+                type: "image", // Simplified assumption, could check file extension
+                format: "feed", // Simplified
+                platform: item.source === "facebook" ? "facebook" : "google",
+                spend: safeNum(item.spend),
+                impressions: safeNum(item.impressions),
+                clicks: safeNum(item.clicks),
+                conversions: safeNum(item.conversions),
+                ctr: safeNum(item.ctr),
+                roas: safeNum(item.roas)
+            };
+        }).filter((c: Creative) => c.spend > 0).slice(0, 12); // Limit to top 12 active creatives for gallery
 
     } catch (e) {
         console.error("Creatives API Error", e);
