@@ -55,7 +55,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-black/60 p-2 shadow-2xl backdrop-blur-xl dark:bg-white/10 dark:border-white/20"
                 >
                     {/* Navigation Group */}
-                    <div className="flex items-center gap-1 rounded-xl bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
                         <motion.button
                             whileHover={{ scale: 1.1, y: -2 }}
                             whileTap={{ scale: 0.95 }}
@@ -115,7 +115,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     <div className="h-8 w-px bg-white/10" />
 
                     {/* Platform Group */}
-                    <div className="flex items-center gap-1 rounded-xl bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
                         {(["all", "google", "facebook"] as const).map((p) => (
                             <motion.button
                                 key={p}
@@ -149,7 +149,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                     <div className="h-8 w-px bg-white/10" />
 
                     {/* Date and Settings Groups */}
-                    <div className="flex items-center gap-1 rounded-xl bg-white/5 p-1">
+                    <div className="flex items-center gap-1 rounded-[10px] bg-white/5 p-1">
                         <motion.button
                             whileHover={{ scale: 1.1, y: -2 }}
                             whileTap={{ scale: 0.95 }}
@@ -167,7 +167,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                 animate={{ opacity: 1, y: -60, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                className="absolute bottom-full left-0 mb-2 w-48 overflow-hidden rounded-xl border border-white/10 bg-black/90 p-1 shadow-2xl backdrop-blur-xl"
+                                className="absolute bottom-full left-0 mb-2 w-48 overflow-hidden rounded-[10px] border border-white/10 bg-black/90 p-1 shadow-2xl backdrop-blur-xl"
                             >
                                 {(['last_7d', 'last_30d', 'this_month', 'last_month'] as const).map((range) => (
                                     <button
@@ -286,7 +286,7 @@ export function FloatingDock({ activeTab, setActiveTab, platform, setPlatform, d
                                             key={range}
                                             onClick={() => { setDateRange(range); setIsMobileMenuOpen(false); }}
                                             className={cn(
-                                                "px-3 py-2 rounded-xl text-xs font-medium border transition-colors",
+                                                "px-3 py-2 rounded-[10px] text-xs font-medium border transition-colors",
                                                 dateRange === range ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-transparent text-muted-foreground"
                                             )}
                                         >

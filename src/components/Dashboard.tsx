@@ -164,7 +164,7 @@ export function Dashboard({ projectId }: { projectId?: string }) {
             {/* Top Bar Branding */}
             <div className="mx-auto max-w-[1600px] mb-8 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-4">
-                    <a href="/dashboard" className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
+                    <a href="/dashboard" className="p-2 rounded-[10px] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
                         <ArrowLeft className="w-5 h-5" />
                     </a>
                     {projectLogo ? (

@@ -176,7 +176,7 @@ function DashboardContent() {
 
                 <button
                     onClick={() => { resetForm(); setIsModalOpen(true); }}
-                    className="group flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-full font-medium hover:opacity-90 transition-opacity"
+                    className="group flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-[10px] font-medium hover:opacity-90 transition-opacity"
                 >
                     <Plus size={20} className="transition-transform group-hover:rotate-90" />
                     <span>Novo Projeto</span>
@@ -193,7 +193,7 @@ function DashboardContent() {
                         <input
                             type="text"
                             placeholder="Buscar projetos..."
-                            className="w-full bg-card/30 border border-white/5 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-light"
+                            className="w-full bg-card/30 border border-white/5 rounded-[10px] py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-light"
                         />
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -254,7 +254,7 @@ function DashboardContent() {
                                     autoFocus
                                     type="text"
                                     placeholder="ex: Campanha Verão"
-                                    className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
+                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
                                     value={newProjectName}
                                     onChange={(e) => setNewProjectName(e.target.value)}
                                 />
@@ -265,7 +265,7 @@ function DashboardContent() {
                                 <input
                                     type="text"
                                     placeholder="Defina uma senha..."
-                                    className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
+                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                 />
@@ -276,7 +276,7 @@ function DashboardContent() {
                                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Descrição</label>
                                 <textarea
                                     placeholder="Breve descrição sobre o cliente ou campanha..."
-                                    className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 resize-none h-20"
+                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 resize-none h-20"
                                     value={newProjectDesc}
                                     onChange={(e) => setNewProjectDesc(e.target.value)}
                                 />
@@ -287,7 +287,7 @@ function DashboardContent() {
                                 <input
                                     type="password"
                                     placeholder={editingProject && editingProject.apiKey ? "•••••••••• (Chave configurada. Deixe em branco para manter)" : "Insira sua chave de API"}
-                                    className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 font-mono"
+                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 font-mono"
                                     value={newApiKey}
                                     onChange={(e) => setNewApiKey(e.target.value)}
                                 />
@@ -298,7 +298,7 @@ function DashboardContent() {
                                 <input
                                     type="text"
                                     placeholder="https://example.com/logo.png"
-                                    className="w-full rounded-xl bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
+                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
                                     value={newLogoUrl}
                                     onChange={(e) => setNewLogoUrl(e.target.value)}
                                 />
@@ -307,7 +307,7 @@ function DashboardContent() {
                             <div className="space-y-3 pt-2 border-t border-white/5">
                                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Recursos Habilitados</label>
                                 <div className="grid grid-cols-2 gap-3">
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-xl bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
                                         <input
                                             type="checkbox"
                                             checked={newFeatures.audience}
@@ -316,7 +316,7 @@ function DashboardContent() {
                                         />
                                         <span>Público</span>
                                     </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-xl bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
                                         <input
                                             type="checkbox"
                                             checked={newFeatures.creatives}
@@ -325,7 +325,7 @@ function DashboardContent() {
                                         />
                                         <span>Criativos</span>
                                     </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-xl bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
                                         <input
                                             type="checkbox"
                                             checked={newFeatures.aiPulse}
@@ -334,7 +334,7 @@ function DashboardContent() {
                                         />
                                         <span>AI Pulse</span>
                                     </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-xl bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
                                         <input
                                             type="checkbox"
                                             checked={newFeatures.reports}
@@ -351,13 +351,13 @@ function DashboardContent() {
                         <div className="flex items-center gap-3 mt-8 pt-4 border-t border-white/5">
                             <button
                                 onClick={resetForm}
-                                className="flex-1 rounded-xl px-4 py-3 text-sm font-semibold hover:bg-secondary/80 transition-colors"
+                                className="flex-1 rounded-[10px] px-4 py-3 text-sm font-semibold hover:bg-secondary/80 transition-colors"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleCreateProject}
-                                className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                                className="flex-1 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
                             >
                                 {editingProject ? "Salvar Alterações" : "Criar Projeto"}
                             </button>

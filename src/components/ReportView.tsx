@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 // Simplified Static Card for Report (No animations)
 function ReportCard({ title, value, icon: Icon, subtext }: any) {
     return (
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-[10px] border border-gray-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{title}</p>
                 <Icon className="h-5 w-5 text-blue-600" />
@@ -60,7 +60,7 @@ export function ReportView({ summary, audience, creatives, platform }: ReportVie
                 </h2>
 
                 {/* AI Insight Static */}
-                <div className="mb-6 p-6 rounded-xl bg-blue-50 border border-blue-100">
+                <div className="mb-6 p-6 rounded-[10px] bg-blue-50 border border-blue-100">
                     <div className="flex items-center gap-2 mb-2 text-blue-700 font-bold uppercase text-xs tracking-wider">
                         AI Insight
                     </div>
@@ -103,11 +103,11 @@ export function ReportView({ summary, audience, creatives, platform }: ReportVie
                 <div className="grid grid-cols-2 gap-8 h-[400px]">
                     {audience && (
                         <>
-                            <div className="rounded-xl border border-gray-200 p-4">
+                            <div className="rounded-[10px] border border-gray-200 p-4">
                                 <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">Gender Distribution</h3>
                                 <DemographicsChart data={audience.gender} title="" color="#7c3aed" />
                             </div>
-                            <div className="rounded-xl border border-gray-200 p-4">
+                            <div className="rounded-[10px] border border-gray-200 p-4">
                                 <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">Device Breakdown</h3>
                                 <DeviceChart data={audience.device} />
                             </div>
@@ -124,7 +124,7 @@ export function ReportView({ summary, audience, creatives, platform }: ReportVie
                 </h2>
                 <div className="grid grid-cols-3 gap-6">
                     {creatives.slice(0, 6).map((c, i) => (
-                        <div key={i} className="flex flex-col border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                        <div key={i} className="flex flex-col border border-gray-200 rounded-[10px] overflow-hidden bg-white shadow-sm">
                             <div className="h-48 w-full bg-gray-100">
                                 <img src={c.url} className="h-full w-full object-cover" alt="Ad" />
                             </div>

@@ -86,7 +86,7 @@ export default function LoginPage() {
                             <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
-                                className="mb-6 flex items-center gap-2 rounded-xl bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/20"
+                                className="mb-6 flex items-center gap-2 rounded-[10px] bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/20"
                             >
                                 <AlertCircle size={16} />
                                 {error}
@@ -104,7 +104,7 @@ export default function LoginPage() {
                                         type="text"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:border-primary/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+                                        className="w-full rounded-[10px] border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:border-primary/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
                                         placeholder="Digite seu usuário..."
                                     />
                                 </div>
@@ -120,7 +120,7 @@ export default function LoginPage() {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:border-primary/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-sans"
+                                        className="w-full rounded-[10px] border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-white placeholder:text-gray-600 focus:border-primary/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-sans"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -139,9 +139,9 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !isBotVerified}
-                                className="relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-primary to-amber-600 p-[1px] shadow-lg shadow-amber-900/20 transition-all hover:shadow-amber-600/20 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
+                                className="relative w-full overflow-hidden rounded-[10px] bg-gradient-to-r from-primary to-amber-600 p-[1px] shadow-lg shadow-amber-900/20 transition-all hover:shadow-amber-600/20 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
                             >
-                                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-black/20 backdrop-blur-sm px-4 py-3 text-white transition-all group-hover/btn:bg-transparent">
+                                <div className="relative flex items-center justify-center gap-2 rounded-[10px] bg-black/20 backdrop-blur-sm px-4 py-3 text-white transition-all group-hover/btn:bg-transparent">
                                     {isSubmitting ? (
                                         <Loader2 className="animate-spin" size={20} />
                                     ) : (

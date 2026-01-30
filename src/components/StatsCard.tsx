@@ -35,7 +35,7 @@ export function StatsCard({ title, value, trend, trendUp, icon: Icon, delay = 0 
                         {value}
                     </h3>
                 </div>
-                <div className="rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 p-3 text-primary shadow-inner border border-white/5 group-hover:scale-110 transition-transform duration-300">
+                <div className="rounded-[10px] bg-gradient-to-br from-primary/20 to-primary/5 p-3 text-primary shadow-inner border border-white/5 group-hover:scale-110 transition-transform duration-300">
                     <Icon className="h-6 w-6" />
                 </div>
             </div>

@@ -38,7 +38,7 @@ export function GeoWidget({ data }: GeoWidgetProps) {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.05 }}
-                            className="group relative p-3 rounded-xl bg-background/40 border border-white/5 hover:bg-background/60 transition-colors"
+                            className="group relative p-3 rounded-[10px] bg-background/40 border border-white/5 hover:bg-background/60 transition-colors"
                         >
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-sm font-semibold text-foreground truncate max-w-[120px]" title={item.city}>

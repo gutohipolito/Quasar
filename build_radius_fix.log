@@ -14,3 +14,16 @@
   Generating static pages using 11 workers (6/9) 
 ✓ Generating static pages using 11 workers (9/9) in 1947.4ms
   Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /dashboard
+├ ○ /icon.png
+├ ○ /login
+├ ○ /project
+└ ○ /robots.txt
+
+
+○  (Static)  prerendered as static content
+

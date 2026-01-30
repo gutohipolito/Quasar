@@ -66,13 +66,13 @@ export function ProjectCard({ id, name, description, lastActive, status, platfor
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-x-2 group-hover:translate-x-0">
                         <button
                             onClick={(e) => { e.stopPropagation(); onEdit(id); }}
-                            className="p-2 rounded-xl hover:bg-white/10 text-muted-foreground hover:text-white transition-colors"
+                            className="p-2 rounded-[10px] hover:bg-white/10 text-muted-foreground hover:text-white transition-colors"
                         >
                             <Pencil size={16} />
                         </button>
                         <button
                             onClick={(e) => { e.stopPropagation(); onDelete(id); }}
-                            className="p-2 rounded-xl hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
+                            className="p-2 rounded-[10px] hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors"
                         >
                             <Trash2 size={16} />
                         </button>
