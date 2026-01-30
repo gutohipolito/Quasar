@@ -247,128 +247,132 @@ function DashboardContent() {
             {/* Create Project Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="w-full max-w-md bg-card border border-white/10 p-8 rounded-[10px] shadow-2xl scale-100 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <Rocket className="w-5 h-5 text-primary" />
-                                {editingProject ? "Editar Projeto" : "Novo Projeto"}
-                            </h2>
-                            <button onClick={resetForm} className="text-muted-foreground hover:text-foreground">
-                                ✕
+                    <div className="w-full max-w-3xl bg-card border border-white/10 p-8 rounded-[16px] shadow-2xl scale-100 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                            <div>
+                                <h2 className="text-2xl font-bold flex items-center gap-2 mb-1">
+                                    <Rocket className="w-6 h-6 text-primary" />
+                                    {editingProject ? "Editar Projeto e Cliente" : "Cadastrar Novo Projeto"}
+                                </h2>
+                                <p className="text-sm text-muted-foreground ml-8">Configure os detalhes de acesso e visualização do cliente.</p>
+                            </div>
+                            <button onClick={resetForm} className="p-2 rounded-full hover:bg-white/5 text-muted-foreground hover:text-foreground transition-colors">
+                                <span className="sr-only">Fechar</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
 
-                        <div className="space-y-5">
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nome do Projeto (Usuário)</label>
-                                <input
-                                    autoFocus
-                                    type="text"
-                                    placeholder="ex: Campanha Verão"
-                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
-                                    value={newProjectName}
-                                    onChange={(e) => setNewProjectName(e.target.value)}
-                                />
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Column 1: Basic Info */}
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nome do Projeto (Cliente)</label>
+                                    <input
+                                        autoFocus
+                                        type="text"
+                                        placeholder="ex: Campanha Verão 2024"
+                                        className="w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50"
+                                        value={newProjectName}
+                                        onChange={(e) => setNewProjectName(e.target.value)}
+                                    />
+                                </div>
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Senha de Acesso do Cliente</label>
-                                <input
-                                    type="text"
-                                    placeholder="Defina uma senha..."
-                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                                <p className="text-[10px] text-muted-foreground">Esta senha será usada pelo cliente para acessar o dashboard.</p>
-                            </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Senha de Acesso</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Defina uma senha segura..."
+                                        className="w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50 font-mono"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
+                                    <p className="text-[10px] text-muted-foreground">Compartilhe esta senha com o cliente para acesso ao dashboard.</p>
+                                </div>
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Descrição</label>
-                                <textarea
-                                    placeholder="Breve descrição sobre o cliente ou campanha..."
-                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 resize-none h-20"
-                                    value={newProjectDesc}
-                                    onChange={(e) => setNewProjectDesc(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Chave de API Windsor.ai</label>
-                                <input
-                                    type="password"
-                                    placeholder={editingProject && editingProject.apiKey ? "•••••••••• (Chave configurada. Deixe em branco para manter)" : "Insira sua chave de API"}
-                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 font-mono"
-                                    value={newApiKey}
-                                    onChange={(e) => setNewApiKey(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL do Logo da Empresa</label>
-                                <input
-                                    type="text"
-                                    placeholder="https://example.com/logo.png"
-                                    className="w-full rounded-[10px] bg-secondary/50 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30"
-                                    value={newLogoUrl}
-                                    onChange={(e) => setNewLogoUrl(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="space-y-3 pt-2 border-t border-white/5">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Recursos Habilitados</label>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            checked={newFeatures.audience}
-                                            onChange={() => toggleFeature('audience')}
-                                            className="rounded border-white/20 bg-black/40 text-primary focus:ring-primary w-4 h-4"
-                                        />
-                                        <span>Público</span>
-                                    </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            checked={newFeatures.creatives}
-                                            onChange={() => toggleFeature('creatives')}
-                                            className="rounded border-white/20 bg-black/40 text-primary focus:ring-primary w-4 h-4"
-                                        />
-                                        <span>Criativos</span>
-                                    </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            checked={newFeatures.aiPulse}
-                                            onChange={() => toggleFeature('aiPulse')}
-                                            className="rounded border-white/20 bg-black/40 text-primary focus:ring-primary w-4 h-4"
-                                        />
-                                        <span>AI Pulse</span>
-                                    </label>
-                                    <label className="flex items-center gap-2 text-sm p-3 rounded-[10px] bg-secondary/30 hover:bg-secondary/50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
-                                        <input
-                                            type="checkbox"
-                                            checked={newFeatures.reports}
-                                            onChange={() => toggleFeature('reports')}
-                                            className="rounded border-white/20 bg-black/40 text-primary focus:ring-primary w-4 h-4"
-                                        />
-                                        <span>Relatórios</span>
-                                    </label>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Descrição / Notas</label>
+                                    <textarea
+                                        placeholder="Detalhes internos sobre a conta..."
+                                        className="w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50 resize-none h-[120px]"
+                                        value={newProjectDesc}
+                                        onChange={(e) => setNewProjectDesc(e.target.value)}
+                                    />
                                 </div>
                             </div>
 
+                            {/* Column 2: Technical Config */}
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Chave de API (Windsor.ai)</label>
+                                    <input
+                                        type="password"
+                                        placeholder={editingProject && editingProject.apiKey ? "•••••••••• (Configurada)" : "Cole a chave de API aqui"}
+                                        className="w-full rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50 font-mono"
+                                        value={newApiKey}
+                                        onChange={(e) => setNewApiKey(e.target.value)}
+                                    />
+                                    <p className="text-[10px] text-muted-foreground">Necessário para carregar dados reais das campanhas.</p>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL do Logo (Marca)</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            placeholder="https://site.com/logo.png"
+                                            className="flex-1 rounded-[10px] bg-secondary/30 px-4 py-3 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-primary/50 transition-all border border-transparent focus:border-primary/30 focus:bg-secondary/50"
+                                            value={newLogoUrl}
+                                            onChange={(e) => setNewLogoUrl(e.target.value)}
+                                        />
+                                        {newLogoUrl && (
+                                            <div className="w-12 h-12 rounded-[8px] bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                                                <img src={newLogoUrl} alt="Preview" className="w-full h-full object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 pt-4 border-t border-white/5">
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Recursos Habilitados</label>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {[
+                                            { id: 'audience', label: 'Público' },
+                                            { id: 'creatives', label: 'Criativos' },
+                                            { id: 'aiPulse', label: 'AI Pulse' },
+                                            { id: 'reports', label: 'Relatórios' }
+                                        ].map((feature) => (
+                                            <label key={feature.id} className="flex items-center gap-3 p-3 rounded-[10px] bg-secondary/20 hover:bg-secondary/40 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                                                <div className="relative flex items-center">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={newFeatures[feature.id as keyof typeof newFeatures]}
+                                                        onChange={() => toggleFeature(feature.id as keyof typeof newFeatures)}
+                                                        className="peer sr-only"
+                                                    />
+                                                    <div className="w-5 h-5 rounded border border-white/30 bg-black/40 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center">
+                                                        <svg className="w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <span className="text-sm font-medium">{feature.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-3 mt-8 pt-4 border-t border-white/5">
+                        <div className="flex items-center gap-4 mt-10 pt-6 border-t border-white/5">
                             <button
                                 onClick={resetForm}
-                                className="flex-1 rounded-[10px] px-4 py-3 text-sm font-semibold hover:bg-secondary/80 transition-colors"
+                                className="flex-1 rounded-[10px] px-4 py-3.5 text-sm font-semibold hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleCreateProject}
-                                className="flex-1 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                                className="flex-[2] rounded-[10px] bg-gradient-to-r from-primary to-amber-600 px-4 py-3.5 text-sm font-bold text-white hover:shadow-lg hover:shadow-primary/20 transition-all transform hover:-translate-y-0.5"
                             >
                                 {editingProject ? "Salvar Alterações" : "Criar Projeto"}
                             </button>
