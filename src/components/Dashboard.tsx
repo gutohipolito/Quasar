@@ -11,7 +11,7 @@ import { DeviceChart } from "@/components/Charts/DeviceChart";
 import { CreativesGallery } from "@/components/CreativesGallery";
 import { AIPulse } from "@/components/AIPulse";
 import { ReportView } from "@/components/ReportView";
-
+import { FloatingDock } from "@/components/FloatingDock";
 import { cn, formatCurrency } from "@/lib/utils";
 import { useLanguage } from "@/components/LanguageProvider";
 import { toPng } from "html-to-image";
@@ -202,136 +202,27 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                 </div>
             )}
 
-            {/* ================= HEADER CONTROL CENTER ================= */}
-            <div className="mx-auto max-w-[1600px] mb-8 relative z-20">
-                <div className="flex flex-col xl:flex-row items-center justify-between gap-6 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[20px] p-4 shadow-2xl">
-
-                    {/* LEFT: Branding & Config */}
-                    <div className="flex items-center gap-6 w-full xl:w-auto justify-between xl:justify-start">
-                        <div className="flex items-center gap-4">
-                            <a href="/dashboard" className="p-2.5 rounded-[10px] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
-                                <ArrowLeft className="w-5 h-5" />
-                            </a>
-                            {projectLogo ? (
-                                <img src={projectLogo} alt="Logo" className="h-10 w-auto max-w-[150px] object-contain" />
-                            ) : (
-                                <div className="h-10 w-10 bg-primary/20 rounded-[10px] flex items-center justify-center">
-                                    <Activity className="w-6 h-6 text-primary" />
-                                </div>
-                            )}
+            {/* ================= HEADER BRANDING ================= */}
+            <div className="mx-auto max-w-[1600px] mb-8 relative z-20 flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                    <a href="/dashboard" className="p-2.5 rounded-[10px] bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-muted-foreground hover:text-foreground">
+                        <ArrowLeft className="w-5 h-5" />
+                    </a>
+                    {projectLogo ? (
+                        <img src={projectLogo} alt="Logo" className="h-10 w-auto max-w-[150px] object-contain" />
+                    ) : (
+                        <div className="h-10 w-10 bg-primary/20 rounded-[10px] flex items-center justify-center">
+                            <Activity className="w-6 h-6 text-primary" />
                         </div>
-
-                        {/* Mobile Menu Button could go here */}
-                    </div>
-
-                    {/* CENTER: Navigation Tabs */}
-                    <div className="flex items-center gap-1 p-1 bg-white/5 rounded-[12px] border border-white/5 overflow-x-auto max-w-full">
-                        <button
-                            onClick={() => setActiveTab("overview")}
-                            className={cn(
-                                "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
-                                activeTab === "overview" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                            )}
-                        >
-                            <LayoutGrid className="w-4 h-4" />
-                            <span>{t.tabs.overview}</span>
-                        </button>
-
-                        {features.audience && (
-                            <button
-                                onClick={() => setActiveTab("audience")}
-                                className={cn(
-                                    "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
-                                    activeTab === "audience" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                                )}
-                            >
-                                <Users className="w-4 h-4" />
-                                <span>{t.tabs.audience}</span>
-                            </button>
-                        )}
-
-                        {features.creatives && (
-                            <button
-                                onClick={() => setActiveTab("creatives")}
-                                className={cn(
-                                    "flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-medium transition-all",
-                                    activeTab === "creatives" ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
-                                )}
-                            >
-                                <BarChart3 className="w-4 h-4" />
-                                <span>{t.tabs.creatives}</span>
-                            </button>
-                        )}
-                    </div>
-
-                    {/* RIGHT: Filters & Tools */}
-                    <div className="flex items-center gap-3 w-full xl:w-auto justify-end flex-wrap">
-
-                        {/* Platform Toggle */}
-                        <div className="flex items-center bg-white/5 rounded-[10px] p-1 border border-white/5">
-                            {(["all", "google", "facebook"] as const).map((p) => (
-                                <button
-                                    key={p}
-                                    onClick={() => setPlatform(p)}
-                                    className={cn(
-                                        "w-9 h-9 flex items-center justify-center rounded-[8px] transition-all",
-                                        platform === p ? "bg-white/10 text-primary shadow-sm" : "text-muted-foreground hover:text-white"
-                                    )}
-                                    title={t.platforms[p]}
-                                >
-                                    {p === "all" ? "All" : p === "google" ? "G" : "F"}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Date Range */}
-                        <select
-                            value={dateRange}
-                            onChange={(e) => setDateRange(e.target.value as DateRange)}
-                            className="bg-white/5 border border-white/10 text-sm rounded-[10px] px-3 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
-                        >
-                            <option value="last_7d">{t.dates.last_7d}</option>
-                            <option value="last_30d">{t.dates.last_30d}</option>
-                            <option value="this_month">{t.dates.this_month}</option>
-                            <option value="last_month">{t.dates.last_month}</option>
-                        </select>
-
-                        <div className="w-px h-8 bg-white/10 mx-1"></div>
-
-                        {/* Customize View Toggle */}
-                        <button
-                            onClick={() => setIsCustomizeOpen(!isCustomizeOpen)}
-                            className={cn(
-                                "flex items-center justify-center w-10 h-10 rounded-[10px] border transition-colors",
-                                isCustomizeOpen ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10"
-                            )}
-                            title="Personalizar Visualização"
-                        >
-                            <Settings className="w-5 h-5" />
-                        </button>
-
-                        {/* Export */}
-                        <button
-                            onClick={handleExportPDF}
-                            className="flex items-center justify-center w-10 h-10 rounded-[10px] bg-white/5 border border-white/10 text-muted-foreground hover:bg-white/10 hover:text-white transition-colors"
-                            title="Exportar PDF"
-                        >
-                            <DownloadCloud className="w-5 h-5" />
-                        </button>
-
-                        <div className="flex bg-white/5 rounded-[10px] p-0.5 border border-white/10">
-                            <ThemeToggle />
-                        </div>
-                        <div className="flex bg-white/5 rounded-[10px] p-0.5 border border-white/10">
-                            <LanguageToggle />
-                        </div>
-                    </div>
+                    )}
                 </div>
-
-                {/* CUSTOMIZE MODAL DROPDOWN */}
+                {/* SETTINGS MODAL (ABSOLUTE POSITIONED) */}
                 {isCustomizeOpen && (
-                    <div className="absolute top-full right-0 mt-4 w-72 bg-black/90 backdrop-blur-xl border border-white/10 rounded-[16px] p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
-                        <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-wider">Visualização</h3>
+                    <div className="absolute top-16 right-0 z-50 w-72 bg-black/90 backdrop-blur-xl border border-white/10 rounded-[16px] p-5 shadow-2xl animate-in fade-in slide-in-from-top-2">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">Visualização</h3>
+                            <button onClick={() => setIsCustomizeOpen(false)} className="text-muted-foreground hover:text-white"><AlertCircle className="w-4 h-4 rotate-45" /></button>
+                        </div>
                         <div className="space-y-3">
                             <label className="flex items-center justify-between text-sm text-muted-foreground hover:text-white cursor-pointer group">
                                 <span>Cartões Principais (Spend/Rev)</span>
@@ -369,9 +260,14 @@ export function Dashboard({ projectId }: { projectId?: string }) {
             {/* Main Content Area */}
             <div className="mx-auto max-w-[1600px] space-y-8 relative z-10 text-foreground">
 
-                {/* Minimal Hero Header - Removed title/subtitle to save space as it is in header now? No, keep it for context but make smaller */}
-                <div className="hidden">
-                    {/* Hidden for now to clean up UI, title is kind of redundant with Nav Tabs */}
+                {/* Minimal Hero Header */}
+                <div className="mb-8 pt-4">
+                    <h1 className="text-4xl font-extrabold text-foreground tracking-tight bg-gradient-to-r from-foreground to-foreground/50 bg-clip-text text-transparent sm:text-5xl">
+                        {t.header.title}
+                    </h1>
+                    <p className="mt-2 text-lg text-muted-foreground max-w-2xl">
+                        {t.header.subtitle}
+                    </p>
                 </div>
 
                 {/* ================= OVERVIEW BENTO GRID ================= */}
@@ -507,6 +403,19 @@ export function Dashboard({ projectId }: { projectId?: string }) {
                 )}
 
             </div>
+
+            {/* FLOATING HUD NAVIGATION */}
+            <FloatingDock
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                platform={platform}
+                setPlatform={setPlatform}
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                onExport={handleExportPDF}
+                onToggleSettings={() => setIsCustomizeOpen(!isCustomizeOpen)}
+            />
+
             {/* Hidden Report View for PDF Generation */}
             {features.reports && (
                 <div id="report-container" className="fixed top-0 left-[-9999px] w-[1200px] h-auto -z-50 opacity-0 pointer-events-none overflow-hidden">
